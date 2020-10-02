@@ -1,14 +1,18 @@
 import 'Allergy.dart';
 
-class Ingredient
-{
+class Ingredient {
   //IngredientType type;
   Allergy allergy;
   String name;
   bool animalProduct;
 
-  Ingredient()
-  {
-
+  showIngrInfo() {
+    print(
+        "The ingredient function contents are: $name, $allergy, $animalProduct");
   }
+
+  Ingredient(
+      {Allergy allergy,
+      String name = "Default ingredient",
+      bool animalProduct = false});
 }
