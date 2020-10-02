@@ -4,8 +4,7 @@ import 'Ingredient.dart';
 import 'Allergy.dart';
 import 'MealType.dart';
 
-class Recipe
-{
+class Recipe {
   List<Ingredient> ingredients;
   String directions;
 
@@ -17,13 +16,28 @@ class Recipe
   List<Cuisine> cuisines;
   List<Diet> diets;
 
-  Recipe()
-  {
+  Recipe(
+      {this.directions = "directions go brr",
+      this.calories = 600,
+      this.servings = 4,
+      this.prepTime = 30,
+      this.totalCookTime = 12,
+      this.mealType = MealType.lunch});
 
+  showCalInfo() {
+    print("Calories are : $calories");
   }
 
-  main()
-  {
-
+  showInfo() {
+    print("Ingredients are :  $ingredients"); //list
+    print("Directions are:  $directions");
+    print("Calories are:  $calories");
+    print("Servings are :  $servings");
+    print("PrepTime is:  $prepTime");
+    print("TotalCookTime is:  $totalCookTime");
+    print("MealType is:  $mealType");
+    print("Allergies are :  $allergies"); //list
+    print("Cuisines is:  $cuisines"); //list
+    print("Diets are : $diets"); //list
   }
 }
