@@ -1,0 +1,22 @@
+enum Cuisine {
+  italian,
+  japanese,
+  korean,
+  mexican,
+  greek,
+  chinese,
+  seafood,
+  mediterranean,
+  thai,
+  turkish,
+  barbeque,
+  soul,
+  cajun,
+  german,
+  indian,
+  vietnamese,
+  vegetarian,
+  filipino,
+  hawaiian,
+  spanish
+}
