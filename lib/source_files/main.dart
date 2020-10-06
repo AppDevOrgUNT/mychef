@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage>{
                         selectedIndex1 = index;
                       });
                     },
-                    mode: DirectSelectMode.tap,
+                    //mode: DirectSelectMode.tap, //.tap will require you to tap the menu then tap again to scroll through options
                     items: _buildItems1()),
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0, top: 20.0),

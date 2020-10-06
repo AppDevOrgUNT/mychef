@@ -3,7 +3,6 @@ part of direct_select_plugin;
 abstract class _DirectSelectBase extends StatefulWidget {
   /// See: [DirectSelect.child]
   final Widget child;
-
   
   /// See: [DirectSelect.items]
   final List<Widget> items;
