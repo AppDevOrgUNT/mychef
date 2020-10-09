@@ -1,7 +1,16 @@
 enum MealType {
+main-course,
+side-dish,
+dessert,
+appetizer,
+salad,
+bread,
 breakfast,
-lunch,
-dinner,
+soup,
+beverage,
+sauce,
+marinade,
+fingerfood,
 snack,
-dessert
+drink,
 }
