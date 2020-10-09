@@ -1,6 +1,11 @@
+import 'Cuisine.dart';
+import 'Diet.dart';
+import 'Allergy.dart';
+import 'MealType.dart';
+
 class SearchButton {
   //
-  List<Ingredient> ingredients;
+  List<String> ingredients;
   List<Allergy> allergies;
   List<Cuisine> cuisines;
   List<Diet> diets;

@@ -11,7 +11,7 @@ class Recipe {
   int calories;
   double servings;
   int prepTime, totalCookTime;
-  MealType mealType;
+  MealType thisMealType;
   List<Allergy> allergies;
   List<Cuisine> cuisines;
   List<Diet> diets;
@@ -22,7 +22,7 @@ class Recipe {
       this.servings = 4,
       this.prepTime = 30,
       this.totalCookTime = 12,
-      this.mealType = MealType.lunch});
+      this.thisMealType = MealType.breakfast});
 
   showCalInfo() {
     print("Calories are : $calories");
@@ -35,7 +35,7 @@ class Recipe {
     print("Servings are :  $servings");
     print("PrepTime is:  $prepTime");
     print("TotalCookTime is:  $totalCookTime");
-    print("MealType is:  $mealType");
+    print("MealType is:  $thisMealType");
     print("Allergies are :  $allergies"); //list
     print("Cuisines is:  $cuisines"); //list
     print("Diets are : $diets"); //list
