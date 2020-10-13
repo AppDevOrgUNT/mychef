@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'entities/note.dart';
 void main() {
   runApp(MyApp());
 }
@@ -50,68 +52,91 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  var index = 0;
+  List<Note> recipes = List<Note>(); // creates the List of Notes object that will store the recipe info
+  var test = Note.ifFails("ops", "guess it didn't work");
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+
+  Future<List<Note>> fetchNotes() async {
+    //for the URL, we are going to add the club API key, its using mine for now
+    //and for any searches you can consult the spoonacular document to see the syntax,
+    //you should be able to replace that middle with a variable
+    var url = 'https://api.spoonacular.com/recipes/complexSearch?query=cookies&apiKey=ed6d31ebce104a339672fc4babd4e536';
+    //This is a feature unique to Future asyncronous functions, it waits for the server to respond to your request
+    var response = await http.get(url);
+    var recipe = List<Note>();
+    //Asserts that the server response was successful
+    if (response.statusCode == 200){
+      //This is a call from the flutter json library.
+      //It transforms the json string into a map. You can run the API url above on a browser to see what the keys for each element are
+      var notesJson = json.decode(response.body);
+      //If there is more than one result, the outtermost layer of the map will contain the number of finds
+      //and a sub-map with all the results
+      for (var noteJson in notesJson["results"]){
+        recipe.add(Note.fromJson(noteJson)); // populates recipes object
+      }
+      return recipe; // returns a List with all the recipes
+    }
+    else{ // this will run if the server fails
+      recipe.add(Note.ifFails("This Failed", "Didn't work"));
+      return recipe;
+    }
   }
 
   @override
+  // initState is what runs where the program first starts up, this is an overload of that function
+  void initState() {
+    super.initState();
+    // This is weird syntax for calling future functions, didn't really understand it but it works
+    fetchNotes().then((value) {
+      setState(() {
+        //stores all the recipes in an object
+        recipes.addAll(value);
+      });
+    });
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    //the placement of the index increment needs to be changed but this works for now
+    index++;
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        //placeholder title for app
+        title: Text('Flutter listview with json'),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: ListView.builder(
+        itemBuilder: (context, index){
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                      //'Title',
+                      recipes[index].title,
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold
+                      )
+                  ),
+                  Text(
+                      //'sub title',
+                      "Recipe ID: " + recipes[index].text,
+                      style: TextStyle(
+                        color: Colors.grey.shade600
+                      )
+
+                  ),
+              ]
+             )
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          );
+        },
+        itemCount: recipes.length,
+      )
     );
   }
 }
