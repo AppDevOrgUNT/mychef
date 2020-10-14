@@ -266,13 +266,53 @@ class SubPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sub Page'),
+        title: Text('Sub Page | search'),
         backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
+
+            //row for 2 buttons
+            Expanded(
+              child: new Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      //recipe 1
+                      IconButton(
+                      icon: Icon(Icons.volume_up),
+                      tooltip: 'look at chicken recipe',
+                      onPressed: () {
+                        //TODO
+                      },
+                    ),
+                      Text('Chicken Recipe'),
+
+                      //recipe 2
+                      IconButton(
+                        icon: Icon(Icons.volume_up),
+                        tooltip: 'look at pasta recipe',
+
+                        onPressed: () {
+                          //TODO
+                        },
+                      ),
+                      Text('Pasta Recipe'),
+
+                    ]
+                )
+              ),
+            ),
+
+
+
+
+
+
+
             Text('Click button to back to Main Page'),
             RaisedButton(
               textColor: Colors.white,
