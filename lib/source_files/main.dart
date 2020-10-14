@@ -199,10 +199,23 @@ class _MyHomePageState extends State<MyHomePage>{
                       });
                     },
                     items: _buildItems4()),
-              ]),
-        ),
+                Text('Click button to move to search'),
+          RaisedButton(
+            textColor: Colors.white,
+            color: Colors.blue,
+            child: Text('Go to search results'),
+            onPressed: () {
+              navigateToSubPage(context);
+            },
+          )
+
+        ])),
       ),
+
     );
+  }
+  Future navigateToSubPage(context) async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
   }
 }
 
@@ -247,3 +260,34 @@ class MySelectionItem extends StatelessWidget {
     );
   } //Widget _buildItem
 } //MySelectionItem
+
+class SubPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sub Page'),
+        backgroundColor: Colors.blue,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Text('Click button to back to Main Page'),
+            RaisedButton(
+              textColor: Colors.white,
+              color: Colors.blue,
+              child: Text('Back to Main Page'),
+              onPressed: () {
+                backToMainPage(context);
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  void backToMainPage(context) {
+    Navigator.pop(context);
+  }
+}
