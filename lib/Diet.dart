@@ -1,9 +1,12 @@
 enum Diet {
-  Keto,
-  Paleo,
+  GlutenFree,
+  Ketogenic,
   Vegetarian,
+  LactoVegetarian,
+  OvoVegetarian,
   Vegan,
-  Raw,
-  LowCarb,
-  NoSugar
+  Pescetarian,
+  Paleo,
+  Primal,
+  Whole30
 }
