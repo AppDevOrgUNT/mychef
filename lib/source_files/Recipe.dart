@@ -17,12 +17,12 @@ class Recipe {
   List<Diet> diets;
 
   //setters
-  setDirections(String A){this.directions = A;}
-  setCalories(int A){this.calories = A;}
-  setServings(double A){this.servings = A;}
-  setPrepTime(int A){this.prepTime = A;}
-  setTotalCookTime(int A){this.totalCookTime = A;}
-  setMealType(MealType A){this.thisMealType = A;}
+  set setDirections(String A){this.directions = A;}
+  set setCalories(int A){this.calories = A;}
+  set setServings(double A){this.servings = A;}
+  set setPrepTime(int A){this.prepTime = A;}
+  set setTotalCookTime(int A){this.totalCookTime = A;}
+  set setMealType(MealType A){this.thisMealType = A;}
 
   //getters automatic
 

@@ -7,9 +7,23 @@ import 'MealType.dart';
 import 'Diet.dart';
 import 'dart:collection';
 
-var chickenRecipe = new Recipe();
+Recipe chickenRecipe = new Recipe(
+    directions:
+        "Step 1\nPreheat oven to 350 degrees F (175 degrees C).\n\nStep 2\nPlace chicken in a roasting pan, and season generously inside and out with salt and pepper. Sprinkle inside and out with onion powder. Place 3 tablespoons margarine in the chicken cavity. Arrange dollops of the remaining margarine around the chicken's exterior. Cut the celery into 3 or 4 pieces, and place in the chicken cavity.\n\nStep 3\nBake uncovered 1 hour and 15 minutes in the preheated oven, to a minimum internal temperature of 180 degrees F (82 degrees C). Remove from heat, and baste with melted margarine and drippings. Cover with aluminum foil, and allow to rest about 30 minutes before serving.\n\n",
+    calories: 240,
+    servings: 6,
+    prepTime: 10,
+    totalCookTime: 100,
+    thisMealType: MealType.mainCourse);
 
-
+Recipe pastaRecipe = new Recipe(
+  directions:"Step :First, make a nest with the flour on a clean work surface \nAdd the remaining ingredients to the center and use a fork to gently break up the eggs.\nTry to keep the flour walls intact as best as you can! \nStep 2 :Next, use your hands to gently mix in the flour. Continue working the dough to bring it together into a shaggy ball.",
+  calories:349,
+  servings: 2,
+  prepTime: 10,
+  totalCookTime: 26,
+  thisMealType: MealType.mainCourse,
+);
 
 void main() => runApp(MyApp());
 
@@ -37,8 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final elements1 = [
     MealType.breakfast,
-    MealType.lunch,
-    MealType.dinner,
+    MealType.appetizer,
+    MealType.mainCourse,
     MealType.dessert,
     MealType.snack,
   ];
@@ -334,6 +348,28 @@ class SubPageChicken extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
+
+
+                  //display recipe info
+                  Expanded(
+                    child: new Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(chickenRecipe.directions),
+                              Text("calories: " + chickenRecipe.calories.toString()),
+                              Text("servings: " + chickenRecipe.servings.toString()),
+                              Text("prepTime: " + chickenRecipe.prepTime.toString()),
+                              Text("totalCookTime:  " + chickenRecipe.totalCookTime.toString()),
+                              Text("meal type:  " + chickenRecipe.thisMealType.toString()),
+                            ])),
+                  ),
+
+
+
+
+
               Text('Click button to back to Main Page'),
               RaisedButton(
                 textColor: Colors.white,
@@ -363,6 +399,24 @@ class SubPagePasta extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
+
+                  //display recipe info
+                  Expanded(
+                    child: new Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(pastaRecipe.directions),
+                              Text("calories: " + pastaRecipe.calories.toString()),
+                              Text("servings: " + pastaRecipe.servings.toString()),
+                              Text("prepTime: " + pastaRecipe.prepTime.toString()),
+                              Text("totalCookTime:  " + pastaRecipe.totalCookTime.toString()),
+                              Text("meal type:  " + pastaRecipe.thisMealType.toString()),
+                            ])),
+                  ),
+
+
               Text('Click button to back to Main Page'),
               RaisedButton(
                 textColor: Colors.white,
@@ -379,3 +433,5 @@ class SubPagePasta extends StatelessWidget {
     Navigator.pop(context);
   }
 }
+
+
