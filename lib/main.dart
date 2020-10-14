@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Ingredient.dart';
-import 'Recipe.dart';
-import 'dart:collection';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'entities/note.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -106,41 +102,41 @@ class _MyHomePageState extends State<MyHomePage> {
     //the placement of the index increment needs to be changed but this works for now
     index++;
     return Scaffold(
-        appBar: AppBar(
-          //placeholder title for app
-          title: Text('Flutter listview with json'),
-        ),
-        body: ListView.builder(
-          itemBuilder: (context, index){
-            return Card(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          //'Title',
-                            recipes[index].title,
-                            style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold
-                            )
-                        ),
-                        Text(
-                          //'sub title',
-                            "Recipe ID: " + recipes[index].text,
-                            style: TextStyle(
-                                color: Colors.grey.shade600
-                            )
+      appBar: AppBar(
+        //placeholder title for app
+        title: Text('Flutter listview with json'),
+      ),
+      body: ListView.builder(
+        itemBuilder: (context, index){
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                      //'Title',
+                      recipes[index].title,
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold
+                      )
+                  ),
+                  Text(
+                      //'sub title',
+                      "Recipe ID: " + recipes[index].text,
+                      style: TextStyle(
+                        color: Colors.grey.shade600
+                      )
 
-                        ),
-                      ]
-                  )
-              ),
-            );
-          },
-          itemCount: recipes.length,
-        )
+                  ),
+              ]
+             )
+            ),
+          );
+        },
+        itemCount: recipes.length,
+      )
     );
   }
-}}
+}
