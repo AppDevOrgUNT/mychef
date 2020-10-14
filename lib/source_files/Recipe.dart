@@ -16,6 +16,17 @@ class Recipe {
   List<Cuisine> cuisines;
   List<Diet> diets;
 
+  //setters
+  setDirections(String A){this.directions = A;}
+  setCalories(int A){this.calories = A;}
+  setServings(double A){this.servings = A;}
+  setPrepTime(int A){this.prepTime = A;}
+  setTotalCookTime(int A){this.totalCookTime = A;}
+  setMealType(MealType A){this.thisMealType = A;}
+
+  //getters automatic
+
+
   Recipe(
       {this.directions = "directions go brr",
       this.calories = 600,
