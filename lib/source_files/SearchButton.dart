@@ -6,9 +6,9 @@ import 'MealType.dart';
 class SearchButton {
   //
   List<String> ingredients;
-  List<Allergy> allergies;
-  List<Cuisine> cuisines;
-  List<Diet> diets;
+  List<String> allergies;
+  List<String> cuisines;
+  List<String> diets;
   //Consider using Ingredient class
   //Call this function with the value you want and they will be added to the end of the ingredients list
   addIngredient(String ingredientA) {

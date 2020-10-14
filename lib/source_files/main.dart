@@ -50,13 +50,16 @@ class _MyHomePageState extends State<MyHomePage>{
     "None",
   ];
   final elements3 = [
-    Diet.Keto,
+    Diet.GlutenFree,
+    Diet.Ketogenic,
     Diet.Vegetarian,
+    Diet.LactoVegetarian,
+    Diet.OvoVegetarian,
     Diet.Vegan,
+    Diet.Pescetarian,
     Diet.Paleo,
-    Diet.LowCarb,
-    Diet.Raw,
-    Diet.NoSugar,
+    Diet.Primal,
+    Diet.Whole30,
     "None",
   ];
   final elements4 = [
