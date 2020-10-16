@@ -1,7 +1,7 @@
-import 'Cuisine.dart';
-import 'Diet.dart';
-import 'Allergy.dart';
-import 'MealType.dart';
+import '../enums/Cuisine.dart';
+import '../enums/Diet.dart';
+import '../enums/Allergy.dart';
+import '../enums/MealType.dart';
 
 class SearchButton {
   //

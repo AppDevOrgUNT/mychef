@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:direct_select/direct_select.dart';
-import 'Ingredient.dart';
-import 'Recipe.dart';
-import 'Allergy.dart';
-import 'MealType.dart';
-import 'Diet.dart';
+import 'enums/Ingredient.dart';
+import 'classes/Recipe.dart';
+import 'enums/Allergy.dart';
+import 'enums/MealType.dart';
+import 'enums/Diet.dart';
 import 'dart:collection';
 
 Recipe chickenRecipe = new Recipe(
@@ -17,8 +17,9 @@ Recipe chickenRecipe = new Recipe(
     thisMealType: MealType.mainCourse);
 
 Recipe pastaRecipe = new Recipe(
-  directions:"Step :First, make a nest with the flour on a clean work surface \nAdd the remaining ingredients to the center and use a fork to gently break up the eggs.\nTry to keep the flour walls intact as best as you can! \nStep 2 :Next, use your hands to gently mix in the flour. Continue working the dough to bring it together into a shaggy ball.",
-  calories:349,
+  directions:
+      "Step :First, make a nest with the flour on a clean work surface \nAdd the remaining ingredients to the center and use a fork to gently break up the eggs.\nTry to keep the flour walls intact as best as you can! \nStep 2 :Next, use your hands to gently mix in the flour. Continue working the dough to bring it together into a shaggy ball.",
+  calories: 349,
   servings: 2,
   prepTime: 10,
   totalCookTime: 26,
@@ -345,41 +346,36 @@ class SubPageChicken extends StatelessWidget {
           backgroundColor: Colors.blue,
         ),
         body: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
+            child: Column(mainAxisAlignment: MainAxisAlignment.end, children: <
+                Widget>[
+          //display recipe info
+          Expanded(
+            child: new Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(chickenRecipe.directions),
+                      Text("calories: " + chickenRecipe.calories.toString()),
+                      Text("servings: " + chickenRecipe.servings.toString()),
+                      Text("prepTime: " + chickenRecipe.prepTime.toString()),
+                      Text("totalCookTime:  " +
+                          chickenRecipe.totalCookTime.toString()),
+                      Text("meal type:  " +
+                          chickenRecipe.thisMealType.toString()),
+                    ])),
+          ),
 
-
-                  //display recipe info
-                  Expanded(
-                    child: new Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text(chickenRecipe.directions),
-                              Text("calories: " + chickenRecipe.calories.toString()),
-                              Text("servings: " + chickenRecipe.servings.toString()),
-                              Text("prepTime: " + chickenRecipe.prepTime.toString()),
-                              Text("totalCookTime:  " + chickenRecipe.totalCookTime.toString()),
-                              Text("meal type:  " + chickenRecipe.thisMealType.toString()),
-                            ])),
-                  ),
-
-
-
-
-
-              Text('Click button to back to Main Page'),
-              RaisedButton(
-                textColor: Colors.white,
-                color: Colors.blue,
-                child: Text('Back to Previous Page'),
-                onPressed: () {
-                  backToMainPage(context);
-                },
-              )
-            ])));
+          Text('Click button to back to Main Page'),
+          RaisedButton(
+            textColor: Colors.white,
+            color: Colors.blue,
+            child: Text('Back to Previous Page'),
+            onPressed: () {
+              backToMainPage(context);
+            },
+          )
+        ])));
   }
 
   void backToMainPage(context) {
@@ -399,23 +395,23 @@ class SubPagePasta extends StatelessWidget {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-
-                  //display recipe info
-                  Expanded(
-                    child: new Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text(pastaRecipe.directions),
-                              Text("calories: " + pastaRecipe.calories.toString()),
-                              Text("servings: " + pastaRecipe.servings.toString()),
-                              Text("prepTime: " + pastaRecipe.prepTime.toString()),
-                              Text("totalCookTime:  " + pastaRecipe.totalCookTime.toString()),
-                              Text("meal type:  " + pastaRecipe.thisMealType.toString()),
-                            ])),
-                  ),
-
+              //display recipe info
+              Expanded(
+                child: new Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(pastaRecipe.directions),
+                          Text("calories: " + pastaRecipe.calories.toString()),
+                          Text("servings: " + pastaRecipe.servings.toString()),
+                          Text("prepTime: " + pastaRecipe.prepTime.toString()),
+                          Text("totalCookTime:  " +
+                              pastaRecipe.totalCookTime.toString()),
+                          Text("meal type:  " +
+                              pastaRecipe.thisMealType.toString()),
+                        ])),
+              ),
 
               Text('Click button to back to Main Page'),
               RaisedButton(
@@ -433,5 +429,3 @@ class SubPagePasta extends StatelessWidget {
     Navigator.pop(context);
   }
 }
-
-

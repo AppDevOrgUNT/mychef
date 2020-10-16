@@ -1,8 +1,8 @@
-import 'Cuisine.dart';
-import 'Diet.dart';
-import 'Ingredient.dart';
-import 'Allergy.dart';
-import 'MealType.dart';
+import '../enums/Cuisine.dart';
+import '../enums/Diet.dart';
+import '../enums/Ingredient.dart';
+import '../enums/Allergy.dart';
+import '../enums/MealType.dart';
 
 class Recipe {
   List<Ingredient> ingredients;
