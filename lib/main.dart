@@ -18,7 +18,7 @@ Recipe chickenRecipe = new Recipe(
 
 Recipe pastaRecipe = new Recipe(
   directions:
-      "Step :First, make a nest with the flour on a clean work surface \nAdd the remaining ingredients to the center and use a fork to gently break up the eggs.\nTry to keep the flour walls intact as best as you can! \nStep 2 :Next, use your hands to gently mix in the flour. Continue working the dough to bring it together into a shaggy ball.",
+      "Step 1\nFirst, make a nest with the flour on a clean work surface \nAdd the remaining ingredients to the center and use a fork to gently break up the eggs.\nTry to keep the flour walls intact as best as you can! \n\nStep 2\nNext, use your hands to gently mix in the flour. Continue working the dough to bring it together into a shaggy ball.",
   calories: 349,
   servings: 2,
   prepTime: 10,
