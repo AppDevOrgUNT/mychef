@@ -51,21 +51,34 @@ class _MyHomePageState extends State<MyHomePage> {
   var ingredient1 = new Ingredient();
 
   final elements1 = [
-    MealType.breakfast,
-    MealType.appetizer,
     MealType.mainCourse,
+    MealType.sideDish,
     MealType.dessert,
+    MealType.appetizer,
+    MealType.salad,
+    MealType.bread,
+    MealType.breakfast,
+    MealType.soup,
+    MealType.beverage,
+    MealType.sauce,
+    MealType.marinade,
+    MealType.fingerFood,
     MealType.snack,
+    MealType.drink,
   ];
   final elements2 = [
-    Allergy.crustacean,
-    Allergy.eggs,
-    Allergy.fish,
-    Allergy.milk,
-    Allergy.peanuts,
-    Allergy.soybeans,
-    Allergy.wheat,
-    Allergy.treenuts,
+    Allergy.Dairy,
+    Allergy.Egg,
+    Allergy.Gluten,
+    Allergy.Grain,
+    Allergy.Peanut,
+    Allergy.Seafood,
+    Allergy.Sesame,
+    Allergy.Shellfish,
+    Allergy.Soy,
+    Allergy.Sulfite,
+    Allergy.TreeNut,
+    Allergy.Wheat,
     "None",
   ];
   final elements3 = [
@@ -81,6 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Diet.Whole30,
     "None",
   ];
+
+  //CHANGE LATER
   final elements4 = [
     "open01",
     "open02",
