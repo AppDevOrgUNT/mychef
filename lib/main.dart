@@ -46,9 +46,68 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+//Text Field Editor
+//Defines custom form widget
+// class MyCustomForm extends StatefulWidget {
+//   @override
+//   _MyCustomFormState createState() => _MyCustomFormState();
+// }
+
+//defines corresponding state class
+//holds data related to Form
+// class _MyCustomFormState extends State<MyCustomForm> {
+//   final myController =
+//       TextEditingController(); //creates text controller and used to get current value of text field
+//
+//   @override
+//   void dispose() {
+//     //cleans controller when widget is disposed
+//     myController.dispose();
+//     super.dispose();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Padding(
+//         padding: const EdgeInsets.all(10.0),
+//         child: TextField(
+//           controller: myController,
+//         ),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//           return showDialog(
+//             context: context,
+//             builder: (context) {
+//               return AlertDialog(
+//                 //gets text that user has entered using TextEditingController
+//                 content: Text(myController.text),
+//               );
+//             },
+//           );
+//         },
+//         tooltip: 'Show me the value!',
+//         child: Icon(Icons.text_fields),
+//       ),
+//     );
+//     //return throw UnimplementedError();
+//   }
+// }
+
 class _MyHomePageState extends State<MyHomePage> {
   var recipe1 = new Recipe();
   var ingredient1 = new Ingredient();
+
+  final myController =
+      TextEditingController(); //creates text controller and used to get current value of text field
+
+  @override
+  void dispose() {
+    //cleans controller when widget is disposed
+    myController.dispose();
+    super.dispose();
+  }
 
   final elements1 = [
     MealType.mainCourse,
@@ -138,6 +197,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
               Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: myController,
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
                   "Select Type of Meal",
@@ -202,7 +267,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, top: 20.0),
                 child: Text(
-                  "Recipies",
+                  "Recipes",
                   style: TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.w500),
                 ),
