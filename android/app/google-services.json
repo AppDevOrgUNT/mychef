@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "532314504986",
+    "firebase_url": "https://mychef-193dd.firebaseio.com",
+    "project_id": "mychef-193dd",
+    "storage_bucket": "mychef-193dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532314504986:android:eb608bd1adf928cce776a3",
+        "android_client_info": {
+          "package_name": "com.appdevorgunt.mychef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532314504986-3i8jq7obg7sft7v74a68dgo295brjl51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8a2KRo3B5RHNIkui9QPZENJlj1i4Njno"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532314504986-3i8jq7obg7sft7v74a68dgo295brjl51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
