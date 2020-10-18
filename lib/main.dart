@@ -5,7 +5,6 @@ import 'classes/Recipe.dart';
 import 'enums/Allergy.dart';
 import 'enums/MealType.dart';
 import 'enums/Diet.dart';
-import 'dart:collection';
 
 Recipe chickenRecipe = new Recipe(
     directions:
