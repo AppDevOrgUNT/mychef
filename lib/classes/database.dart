@@ -4,11 +4,21 @@ import 'dart:core';
 final database = Firestore.instance;
 
 class Database {
-  /// Writes the given data to the database.
+  /// TODO: Isha (ID of the current user.)
+  static int userID;
+
+  /// TODO: Isha (Logs in the user given the user's information.)
   ///
-  /// NOTE: Type "K" must be able to be cast to a String. If "K" is an int,
-  /// String, etc., then you're fine; otherwise, implement a toString() method.
-  static Future<bool> writeData(
+  /// Returns true if login was successful. Returns false otherwise.
+  static bool logIn(String username, String password)
+  {
+    // If (username and password exist in the database and are correct) then:
+    //    assign the userID field above to a unique ID based on it, return true.
+    // Else, return false.
+  }
+
+  /// Writes the given data to the database.
+  static void writeData(
       String collection,
       String document,
       dynamic name,
@@ -16,10 +26,8 @@ class Database {
       async
   {
     await database.collection(collection.toString())
-      .document(document.toString())
-      .setData({name.toString(): data});
-
-    return true;
+        .document(document.toString())
+        .setData({name.toString(): data});
   }
 
   /// Retrieves all data at the location.
