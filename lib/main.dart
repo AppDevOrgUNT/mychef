@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:direct_select/direct_select.dart';
 import 'enums/Ingredient.dart';
@@ -6,11 +8,6 @@ import 'enums/Allergy.dart';
 import 'enums/MealType.dart';
 import 'enums/Diet.dart';
 import 'dart:collection';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-// FIREBASE TEST //
-final databaseReference = Firestore.instance;
-// END FIREBASE TEST //
 
 Recipe chickenRecipe = new Recipe(
     directions:
@@ -37,28 +34,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    // FIREBASE TEST //
-    createTest();
-    print("TESTING COMPLETE");
-    // END FIREBASE TEST //
-
     return MaterialApp(
       home: MyHomePage(title: 'myChef Functionality Test'),
     );
   } //Widget build
 } //MyApp Class
-
-// FIREBASE TEST //
-void createTest() async {
-  await databaseReference.collection("TestCollection")
-    .document("TestDocument")
-    .setData({
-      'dataItem1': "Hello",
-      'dataItem2': "World"
-  });
-}
-// END FIREBASE TEST //
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
