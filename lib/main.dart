@@ -61,6 +61,7 @@ class MyHomePageWidget extends StatefulWidget {
 //RECREATING CLASS FOR MYHOMEPAGE CLASS
 class _MyHomePageWidgetState extends State<MyHomePageWidget> {
   int _selectedIndex = 0;
+  //final List<String> entries =
 
   static const TextStyle optionStyle = TextStyle(
       //Text Style
@@ -84,52 +85,32 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
         Container(
           height: 50,
           color: Colors.amber[500],
+          child: const Center(child: Text('Bacon')),
+        ),
+        Container(
+          height: 50,
+          color: Colors.amber[400],
+          child: const Center(child: Text('Rice')),
+        ),
+        Container(
+          height: 50,
+          color: Colors.amber[300],
+          child: const Center(child: Text('Lettuce')),
+        ),
+        Container(
+          height: 50,
+          color: Colors.amber[600],
+          child: const Center(child: Text('Tomato')),
+        ),
+        Container(
+          height: 50,
+          color: Colors.amber[500],
           child: const Center(child: Text('Wheat Bread')),
         ),
         Container(
           height: 50,
           color: Colors.amber[400],
-          child: const Center(child: Text('Bacon')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
+          child: const Center(child: Text('Banana')),
         ),
       ],
     ),
