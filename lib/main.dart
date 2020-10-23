@@ -50,6 +50,14 @@ class MyApp extends StatelessWidget {
 //   _MyHomePageState createState() => _MyHomePageState();
 // } //MyHomePage Class
 
+//CREATING STATEFUL FOR SEARCHTEXTFIELD
+// class SearchTextFieldWidget extends StatefulWidget {
+//   SearchTextFieldWidget({Key key}) : super(key: key);
+//
+//   @override
+//   _SearchTextFieldWidgetState createState() => _SearchTextFieldWidgetState();
+// }
+
 //RECREATING STATEFUL WIDGET FOR MYHOMEPAGESTATE
 class MyHomePageWidget extends StatefulWidget {
   MyHomePageWidget({Key key}) : super(key: key);
@@ -61,7 +69,6 @@ class MyHomePageWidget extends StatefulWidget {
 //RECREATING CLASS FOR MYHOMEPAGE CLASS
 class _MyHomePageWidgetState extends State<MyHomePageWidget> {
   int _selectedIndex = 0;
-  //final List<String> entries =
 
   static const TextStyle optionStyle = TextStyle(
       //Text Style
@@ -69,50 +76,9 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
       fontWeight: FontWeight.bold);
 
   static List<Widget> _widgetOptions = <Widget>[
-    //List of ingredients widgets
-    // Text(
-    //   'Index 0: Shopping Cart', //WANT TO PRINT EACH STRING FROM THE LIST
-    //   style: optionStyle,
-    // ),
-    ListView(
-      padding: const EdgeInsets.all(10),
-      children: <Widget>[
-        Container(
-          height: 50,
-          color: Colors.amber[600],
-          child: const Center(child: Text('Eggs')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[500],
-          child: const Center(child: Text('Bacon')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[400],
-          child: const Center(child: Text('Rice')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[300],
-          child: const Center(child: Text('Lettuce')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[600],
-          child: const Center(child: Text('Tomato')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[500],
-          child: const Center(child: Text('Wheat Bread')),
-        ),
-        Container(
-          height: 50,
-          color: Colors.amber[400],
-          child: const Center(child: Text('Banana')),
-        ),
-      ],
+    //Contains widgets to display for each tab
+    Center(
+      child: ListOfIngredientsWidget(), //Calls list of ingredients widget call
     ),
     Text(
       'Index 1: Dashboard', //TODO: Find widget for multiple lines of text
@@ -126,9 +92,9 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
       'Index 3: Favorites',
       style: optionStyle,
     ),
-    Text(
-      'Index 4: Search',
-      style: optionStyle,
+    Center(
+      //Centers the search text widget class
+      child: SearchTextFieldWidget(), //Calls the Search Widget Class
     ),
   ];
 
@@ -139,9 +105,11 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
   }
 
   Widget build(BuildContext context) {
+    //Constructs how the page look
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Testing Navigator'),
+        title: const Text(
+            'Testing Navigator Bar'), //TODO: How to chane text of app bar to match bottom tab
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -151,30 +119,112 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_shopping_cart),
-            title: Text('Shopping Cart'),
+            label: 'Shopping Cart',
             //backgroundColor: Colors.blue[200],
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
-            title: Text('Dashboard'),
+            label: 'Dashboard',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
-            title: Text('Favorite'),
+            label: 'Favorites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Search'),
+            label: 'Search',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue[900],
         onTap: _onItemTapped,
       ),
+    );
+  }
+}
+
+//Class for search text field
+class SearchTextFieldWidget extends StatefulWidget {
+  SearchTextFieldWidget({Key key}) : super(key: key);
+
+  @override
+  _SearchTextFieldWidgetState createState() => _SearchTextFieldWidgetState();
+}
+
+class _SearchTextFieldWidgetState extends State<SearchTextFieldWidget> {
+  final _formKey = GlobalKey<FormState>();
+
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Enter Ingredients',
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter ingredients';
+              }
+              return null;
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: ElevatedButton(
+              //Creates add button
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  //PROCESS DATA HERE
+                }
+              },
+              child: Text('Add'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//Class to display list of ingredients that are appended to the list
+class ListOfIngredientsWidget extends StatefulWidget {
+  ListOfIngredientsWidget({Key key}) : super(key: key);
+
+  @override
+  _ListOfIngredientsWidgetState createState() =>
+      _ListOfIngredientsWidgetState();
+}
+
+class _ListOfIngredientsWidgetState extends State<ListOfIngredientsWidget> {
+  final List<String> ingredients = <String>[
+    'Eggs',
+    'Bacon',
+    'Rice',
+    'Lettuce'
+  ]; //List of ingredients can be appended here
+  final List<int> colorCodes = <int>[600, 500, 400, 300];
+
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: ingredients.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          height: 30,
+          //color: Colors.indigo[colorCodes[index]],
+          child: Center(
+            child: Text('${ingredients[index]}'),
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 }
