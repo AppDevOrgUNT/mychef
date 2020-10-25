@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'enums/Ingredient.dart';
 import 'classes/Recipe.dart';
 import 'enums/Allergy.dart';
@@ -6,6 +7,7 @@ import 'enums/MealType.dart';
 import 'enums/Diet.dart';
 import 'dart:collection';
 import 'classes/SearchButton.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 var _currentIndex = 0; //Global Variable for page index
 
@@ -76,9 +78,9 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
       fontWeight: FontWeight.bold);
 
   static List<Widget> _widgetOptions = <Widget>[
-    //Contains widgets to display for each tab
+    //Contains widgets to display for each tab; Stored in center widget
     Center(
-      child: ListOfIngredientsWidget(), //Calls list of ingredients widget call
+      child: ListOfIngredientsWidget(), //Calls list of ingredients widget class
     ),
     Text(
       'Index 1: Dashboard', //TODO: Find widget for multiple lines of text
@@ -92,9 +94,27 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
       'Index 3: Favorites',
       style: optionStyle,
     ),
-    Center(
-      //Centers the search text widget class
-      child: SearchTextFieldWidget(), //Calls the Search Widget Class
+    // Center(
+    //   //Do column widget: https://api.flutter.dev/flutter/widgets/Column-class.html
+    //   //Centers the search text widget class
+    //   child:
+    //       SearchTextFieldWidget(), //Calls the Search Widget Class //TODO: Implement ListView for search class and horizontal scrolling checklist
+    // ),
+    ListView(
+      padding: const EdgeInsets.all(5),
+      children: <Widget>[
+        SearchTextFieldWidget(),
+        Text('Proteins'),
+        HorizontalChecklistWidget(), //Need to find a way to create an instance of this class for each category
+        Text('Grains'),
+        HorizontalChecklistWidget(),
+        Text('Vegetables'),
+        HorizontalChecklistWidget(),
+        Text('Fruits'),
+        HorizontalChecklistWidget(),
+        Text('Dairy'),
+        HorizontalChecklistWidget(),
+      ],
     ),
   ];
 
@@ -109,7 +129,7 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-            'Testing Navigator Bar'), //TODO: How to chane text of app bar to match bottom tab
+            'Testing Navigator Bar'), //TODO: How to change text of app bar to match bottom tab
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -166,11 +186,12 @@ class _SearchTextFieldWidgetState extends State<SearchTextFieldWidget> {
         children: <Widget>[
           TextFormField(
             decoration: const InputDecoration(
-              hintText: 'Enter Ingredients',
+              hintText: 'Enter Ingredient',
             ),
             validator: (value) {
+              //If user doesn't enter anything on the text field
               if (value.isEmpty) {
-                return 'Please enter ingredients';
+                return 'Please enter an ingredient'; //Alerts user
               }
               return null;
             },
@@ -181,7 +202,7 @@ class _SearchTextFieldWidgetState extends State<SearchTextFieldWidget> {
               //Creates add button
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  //PROCESS DATA HERE
+                  //PROCESS DATA HERE AFTER USER PRESSES THE BUTTON
                 }
               },
               child: Text('Add'),
@@ -207,12 +228,27 @@ class _ListOfIngredientsWidgetState extends State<ListOfIngredientsWidget> {
     'Eggs',
     'Bacon',
     'Rice',
-    'Lettuce'
+    'Lettuce',
+    'Banana',
+    'Chicken',
+    'Wheat Bread',
+    'Soy Sauce',
+    'Baking Soda',
+    'Butter',
+    'Beef',
+    'Pork',
+    'Cream Cheese',
+    'Broccoli',
+    'Ham',
+    'Whipping Cream',
+    'Garlic',
+    'Tomato'
   ]; //List of ingredients can be appended here
-  final List<int> colorCodes = <int>[600, 500, 400, 300];
+  //final List<int> colorCodes = <int>[600, 500, 400, 300];
 
   Widget build(BuildContext context) {
     return ListView.separated(
+      //Creates dynamic list of ingredients from the list
       padding: const EdgeInsets.all(8),
       itemCount: ingredients.length,
       itemBuilder: (BuildContext context, int index) {
@@ -228,6 +264,174 @@ class _ListOfIngredientsWidgetState extends State<ListOfIngredientsWidget> {
     );
   }
 }
+
+//Creates custom labeled checkbox class used in the HorizontalChecklistWidget class
+class LabeledCheckbox extends StatelessWidget {
+  const LabeledCheckbox({
+    //to keep a consistent layout
+    this.label,
+    this.padding,
+    this.value,
+    this.onChanged,
+  });
+  final String label;
+  final EdgeInsets padding;
+  final bool value;
+  final Function onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        onChanged(!value);
+      },
+      child: Padding(
+        padding: padding,
+        child: Row(
+          //creates a "custom" checkbox instead of using CheckboxListTile Widget
+          children: <Widget>[
+            Expanded(child: Text(label)),
+            Checkbox(
+              value: value,
+              onChanged: (bool newValue) {
+                onChanged(newValue);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//Class that implements horizontal scrolling checklist
+class HorizontalChecklistWidget extends StatefulWidget {
+  HorizontalChecklistWidget({Key key}) : super(key: key);
+
+  @override
+  _HorizontalChecklistWidgetState createState() =>
+      _HorizontalChecklistWidgetState();
+}
+
+/* NOTES:
+    -Need a way to create a new instance/(object?) of HorizontalChecklistWidget class for each category
+*/
+
+class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
+  final List<String> ingredients = <String>[
+    'Eggs',
+    'Bacon',
+    'Rice',
+    'Lettuce'
+  ]; //List of ingredients can be appended here; NOT USED IN THIS CLASS YET
+
+  bool _isSelected = false;
+  final _width = 130.0; //sets consistent width for checkboxes
+
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      height: 50,
+      child: ListView(
+        scrollDirection: Axis.horizontal, //makes scrolling go left and right
+        children: <Widget>[
+          /* MORE NOTES
+              -Need a way to create instance/(object?) of each container for the ingredient checkboxes
+              -Need to fix checkboxes to not all be checked when one is selected
+              -Need a way for label(text) to dynamically change size when it doesn't fit in the checkbox container
+              OR maybe make checkbox container bigger to where majority of words(ingredients) fit
+           */
+          Container(
+            width: _width,
+            color: Colors.grey[300],
+            child: LabeledCheckbox(
+              label: 'Egg',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value:
+                  _isSelected, //<== Accessed and changed throughout the whole class
+              onChanged: (bool newValue) {
+                setState(() {
+                  _isSelected = newValue;
+                });
+              },
+            ),
+          ),
+          Container(
+            width: _width,
+            color: Colors.grey[200],
+            child: LabeledCheckbox(
+              label: 'Bacon',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: _isSelected,
+              onChanged: (bool newValue) {
+                setState(() {
+                  _isSelected = newValue;
+                });
+              },
+            ),
+          ),
+          Container(
+            width: _width,
+            color: Colors.grey[300],
+            child: LabeledCheckbox(
+              label: 'Lettuce',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: _isSelected,
+              onChanged: (bool newValue) {
+                setState(() {
+                  _isSelected = newValue;
+                });
+              },
+            ),
+          ),
+          Container(
+            width: _width,
+            color: Colors.grey[200],
+            child: LabeledCheckbox(
+              label: 'Rice',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: _isSelected,
+              onChanged: (bool newValue) {
+                setState(() {
+                  _isSelected = newValue;
+                });
+              },
+            ),
+          ),
+          Container(
+            width: _width,
+            color: Colors.grey[300],
+            child: LabeledCheckbox(
+              label: 'Banana',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: _isSelected,
+              onChanged: (bool newValue) {
+                setState(() {
+                  _isSelected = newValue;
+                });
+              },
+            ),
+          ),
+          Container(
+            width: _width,
+            color: Colors.grey[200],
+            child: LabeledCheckbox(
+              label: 'Chicken',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: _isSelected,
+              onChanged: (bool newValue) {
+                setState(() {
+                  _isSelected = newValue;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 //This is the class that is now "stateful" from "MyHomePage" class
 // class _MyHomePageState extends State<MyHomePage> {
 //   var recipe1 = new Recipe();
