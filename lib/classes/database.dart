@@ -3,11 +3,13 @@ import 'dart:core';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
-final database = Firestore.instance;
-
 class Database {
   /// Authentication methods implementation
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  static final database = FirebaseFirestore.instance;
+
+  /// Used for storing variables.
+  Future<String> uid;
 
   Future<String> signIn(String email, String password) async {
     UserCredential user = await _firebaseAuth.signInWithEmailAndPassword(
@@ -40,7 +42,6 @@ class Database {
     return user.emailVerified;
   }
 
-  @override
   Future<void> changeEmail(String email) async {
     User user = _firebaseAuth.currentUser;
     user.updateEmail(email).then((_) {
@@ -51,7 +52,6 @@ class Database {
     return null;
   }
 
-  @override
   Future<void> changePassword(String password) async {
     User user = _firebaseAuth.currentUser;
     user.updatePassword(password).then((_) {
@@ -62,7 +62,6 @@ class Database {
     return null;
   }
 
-  @override
   Future<void> deleteUser() async {
     User user = _firebaseAuth.currentUser;
     user.delete().then((_) {
@@ -73,7 +72,6 @@ class Database {
     return null;
   }
 
-  @override
   Future<void> sendPasswordResetMail(String email) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
     return null;
@@ -84,17 +82,17 @@ class Database {
       String collection, String document, dynamic name, dynamic data) async {
     await database
         .collection(collection.toString())
-        .document(document.toString())
-        .setData({name.toString(): data});
+        .doc(document.toString())
+        .set({name.toString(): data});
   }
 
   /// Retrieves all data at the location.
   static Future<Map<String, dynamic>> retrieveDataMap(
       String collection, String document) async {
     DocumentSnapshot snapshot =
-        await database.collection(collection).document(document).get();
+        await database.collection(collection).doc(document).get();
 
-    return Map.from(snapshot.data);
+    return Map.from(snapshot.data());
   }
 
   /// Retrieves a specific value at the location.
