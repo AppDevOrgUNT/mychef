@@ -10,9 +10,11 @@ import 'classes/SearchButton.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
 var _currentIndex = 0; //Global Variable for page index
+const TextStyle style =
+    TextStyle(fontFamily: 'Montserrat'); //global text format
 
 //App colors
-const interfaceColor = const Color.fromARGB(0xff, 0x79, 0xA5, 0x4E);
+const interfaceColor = const Color.fromARGB(0xff, 0x86, 0xB3, 0x2C);
 const purpleColor = const Color.fromARGB(0xff, 0xA1, 0x79, 0xBC);
 const greenColor = const Color.fromARGB(0xff, 0x79, 0xA5, 0x4E);
 const orangeColor = const Color.fromARGB(0xff, 0xE6, 0x8A, 0x00);
@@ -126,32 +128,37 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.grey[700],
+        //backgroundColor: interfaceColor,
+        unselectedItemColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.add_shopping_cart),
             label: 'Shopping Cart',
-            //backgroundColor: Colors.blue[200],
+            backgroundColor: interfaceColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.article_rounded),
             label: 'Recipes',
+            backgroundColor: interfaceColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+            backgroundColor: interfaceColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favorites',
+            backgroundColor: interfaceColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.view_headline_sharp),
             label: 'Settings',
+            backgroundColor: interfaceColor,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[900],
+        selectedItemColor: Color.fromARGB(0xff, 0x4E, 0x6E, 0x0F),
         onTap: _onItemTapped,
       ),
     );
@@ -169,23 +176,35 @@ class SearchTextFieldWidget extends StatefulWidget {
 class _SearchTextFieldWidgetState extends State<SearchTextFieldWidget> {
   final _formKey = GlobalKey<FormState>();
 
+  //Might be a good resource: https://dev.to/luizeduardotj/search-bar-in-flutter-33e1
+
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(
-              hintText: 'Enter Ingredient',
-            ),
-            validator: (value) {
-              //If user doesn't enter anything on the text field
-              if (value.isEmpty) {
-                return 'Please enter an ingredient'; //Alerts user
-              }
-              return null;
-            },
+          // TextFormField(
+          //   decoration: const InputDecoration(
+          //     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          //     hintText: 'Enter Ingredient',
+          //   ),
+          //   validator: (value) {
+          //     //If user doesn't enter anything on the text field
+          //     if (value.isEmpty) {
+          //       return 'Please enter an ingredient'; //Alerts user
+          //     }
+          //     return null;
+          //   },
+          // ),
+          TextField(
+            obscureText: false,
+            style: style,
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                hintText: "Enter ingredient",
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0))),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -196,7 +215,10 @@ class _SearchTextFieldWidgetState extends State<SearchTextFieldWidget> {
                   //PROCESS DATA HERE AFTER USER PRESSES THE BUTTON
                 }
               },
-              child: Text('Add'),
+              child: Text(
+                'Add',
+                style: style,
+              ),
             ),
           ),
         ],
@@ -240,7 +262,10 @@ class _ShoppingCartWidgetState extends State<ShoppingCartWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shopping Cart'),
+        title: Text(
+          'Shopping Cart',
+          style: style,
+        ),
         backgroundColor: interfaceColor,
       ),
       body: Center(
@@ -253,7 +278,7 @@ class _ShoppingCartWidgetState extends State<ShoppingCartWidget> {
               height: 30,
               //color: Colors.indigo[colorCodes[index]],
               child: Center(
-                child: Text('${ingredients[index]}'),
+                child: Text('${ingredients[index]}', style: style),
               ),
             );
           },
@@ -280,26 +305,32 @@ class _HomeTabWidgetState extends State<HomeTabWidget> {
       appBar: AppBar(
         title: Text(
           'Let\'s Cook!',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: style,
         ),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                SearchTextFieldWidget(); //TODO: Search bar should pop up after pressing this
+              }),
+        ],
         backgroundColor: interfaceColor,
       ),
       body: Center(
         child: ListView(
           padding: const EdgeInsets.all(5),
           children: <Widget>[
-            SearchTextFieldWidget(),
-            Text('Proteins'),
+            //SearchTextFieldWidget(),
+            SizedBox(height: 25.0),
+            Text('Proteins', style: style),
             HorizontalChecklistWidget(), //Need to find a way to create an instance of this class for each category
-            Text('Grains'),
+            Text('Grains', style: style),
             HorizontalChecklistWidget(),
-            Text('Vegetables'),
+            Text('Vegetables', style: style),
             HorizontalChecklistWidget(),
-            Text('Fruits'),
+            Text('Fruits', style: style),
             HorizontalChecklistWidget(),
-            Text('Dairy'),
+            Text('Dairy', style: style),
             HorizontalChecklistWidget(),
           ],
         ),
@@ -333,7 +364,7 @@ class LabeledCheckbox extends StatelessWidget {
         child: Row(
           //creates a "custom" checkbox instead of using CheckboxListTile Widget
           children: <Widget>[
-            Expanded(child: Text(label)),
+            Expanded(child: Text(label, style: style)),
             Checkbox(
               value: value,
               onChanged: (bool newValue) {
@@ -369,7 +400,12 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
   ]; //List of ingredients can be appended here for each category:
   //Proteins, grains, vegetables, fruits, and dairy
 
-  final List<int> colorCodes = <int>[300, 200, 300, 200];
+  final List<int> colorCodes = <int>[
+    300,
+    200,
+    300,
+    200
+  ]; //TODO: Change color for each category (for each function call)
 
   bool _isSelected = false;
   final _width = 130.0; //sets consistent width for checkboxes
@@ -388,7 +424,6 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
               color: Colors.grey[colorCodes[index]],
             ),
             width: _width,
-            // color: Colors.grey[colorCodes[index]],
             child: LabeledCheckbox(
               label: '${ingredients[index]}',
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -427,7 +462,10 @@ class _RecipesTabWidgetState extends State<RecipesTabWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipes'),
+        title: Text(
+          'Recipes',
+          style: style,
+        ),
         backgroundColor: interfaceColor,
       ),
       body: Center(
@@ -458,6 +496,7 @@ class _RecipesTabWidgetState extends State<RecipesTabWidget> {
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat',
                     ),
                   ),
                 ],
@@ -489,7 +528,7 @@ class SettingTabWidget extends StatefulWidget {
 }
 
 class _SettingTabWidgetState extends State<SettingTabWidget> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  //TextStyle style = TextStyle(fontWeight: FontWeight.normal);
 
   @override
   Widget build(BuildContext context) {
@@ -520,7 +559,9 @@ class _SettingTabWidgetState extends State<SettingTabWidget> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: () {
+          //Process data here
+        },
         child: Text("Login",
             textAlign: TextAlign.center,
             style: style.copyWith(
@@ -549,7 +590,10 @@ class _SettingTabWidgetState extends State<SettingTabWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Login'),
+        title: Text(
+          'User Login',
+          style: style,
+        ),
         backgroundColor: interfaceColor,
       ),
       body: Center(
