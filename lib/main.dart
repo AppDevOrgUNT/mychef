@@ -104,9 +104,12 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
       'Not sure what to put here',
       style: optionStyle,
     ),
-    Text(
-      'Settings for User login',
-      style: optionStyle,
+    // Text(
+    //   'Settings for User login',
+    //   style: optionStyle,
+    // ),
+    Center(
+      child: SettingTabWidget(),
     ),
   ];
 
@@ -262,6 +265,7 @@ class _ShoppingCartWidgetState extends State<ShoppingCartWidget> {
   }
 }
 
+//checkboxes and search is stored here
 class HomeTabWidget extends StatefulWidget {
   HomeTabWidget({Key key}) : super(key: key);
 
@@ -362,7 +366,8 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
     'Bacon',
     'Rice',
     'Lettuce'
-  ]; //List of ingredients can be appended here
+  ]; //List of ingredients can be appended here for each category:
+  //Proteins, grains, vegetables, fruits, and dairy
 
   final List<int> colorCodes = <int>[300, 200, 300, 200];
 
@@ -378,8 +383,12 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
         itemCount: ingredients.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.grey[colorCodes[index]],
+            ),
             width: _width,
-            color: Colors.grey[colorCodes[index]],
+            // color: Colors.grey[colorCodes[index]],
             child: LabeledCheckbox(
               label: '${ingredients[index]}',
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -387,8 +396,7 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
                   _isSelected, //<== Accessed and changed throughout the whole class
               onChanged: (bool newValue) {
                 setState(() {
-                  //_isSelected = newValue;
-                  newValue = true;
+                  _isSelected = newValue;
                 });
               },
             ),
@@ -399,6 +407,7 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
   }
 }
 
+//Information from Recipe class can be stored here
 class RecipesTabWidget extends StatefulWidget {
   RecipesTabWidget({Key key}) : super(key: key);
 
@@ -427,7 +436,10 @@ class _RecipesTabWidgetState extends State<RecipesTabWidget> {
           itemCount: recipeImage.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-              color: yellowColor,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15), //rounds off corners
+                color: yellowColor,
+              ),
               margin: EdgeInsets.all(10),
               child: Row(
                 children: <Widget>[
@@ -452,8 +464,10 @@ class _RecipesTabWidgetState extends State<RecipesTabWidget> {
               ),
             );
           },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
+          separatorBuilder: (BuildContext context, int index) => SizedBox(
+            height: 1.0,
+          ),
+          //const Divider(),
         ),
       ),
     );
@@ -463,6 +477,108 @@ class _RecipesTabWidgetState extends State<RecipesTabWidget> {
     //Make it go to generalized subpage class for all recipes
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SubPageChicken()));
+  }
+}
+
+//Stores user login
+class SettingTabWidget extends StatefulWidget {
+  SettingTabWidget({Key key}) : super(key: key);
+
+  @override
+  _SettingTabWidgetState createState() => _SettingTabWidgetState();
+}
+
+class _SettingTabWidgetState extends State<SettingTabWidget> {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+  @override
+  Widget build(BuildContext context) {
+    final emailField = TextField(
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Email",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+    );
+
+    final passwordField = TextField(
+      obscureText: true,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Password",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+    );
+
+    final loginButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(20.0),
+      color: orangeColor,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {},
+        child: Text("Login",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+              color: Colors.white,
+              //fontWeight: FontWeight.bold
+            )),
+      ),
+    );
+
+    final guestButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(20.0),
+      color: orangeColor,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {},
+        child: Text("Continue as Guest",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+              color: Colors.white,
+              //fontWeight: FontWeight.bold
+            )),
+      ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('User Login'),
+        backgroundColor: interfaceColor,
+      ),
+      body: Center(
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(36.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                //SizedBox(height: 45.0),
+                emailField,
+                SizedBox(height: 25.0), //separate text fields
+                passwordField,
+                SizedBox(
+                  height: 35.0,
+                ),
+                loginButton,
+                SizedBox(
+                  height: 15.0,
+                ),
+                guestButton,
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
