@@ -13,12 +13,12 @@ var _currentIndex = 0; //Global Variable for page index
 
 //App colors
 const interfaceColor = const Color.fromARGB(0xff, 0x79, 0xA5, 0x4E);
-const fruitsColor = const Color.fromARGB(0xff, 0xA1, 0x79, 0xBC);
-const vegetablesColor = const Color.fromARGB(0xff, 0x79, 0xA5, 0x4E);
-const grainsColor = const Color.fromARGB(0xff, 0xE6, 0x8A, 0x00);
-const proteinColor = const Color.fromARGB(0xff, 0xC6, 0x5D, 0x3E);
-const dairyColor = const Color.fromARGB(0xff, 0x7B, 0xA4, 0xDD);
-const condimentsColor = const Color.fromARGB(0xff, 0xEB, 0xB0, 0x00);
+const purpleColor = const Color.fromARGB(0xff, 0xA1, 0x79, 0xBC);
+const greenColor = const Color.fromARGB(0xff, 0x79, 0xA5, 0x4E);
+const orangeColor = const Color.fromARGB(0xff, 0xE6, 0x8A, 0x00);
+const redColor = const Color.fromARGB(0xff, 0xC6, 0x5D, 0x3E);
+const blueColor = const Color.fromARGB(0xff, 0x7B, 0xA4, 0xDD);
+const yellowColor = const Color.fromARGB(0xff, 0xEB, 0xB0, 0x00);
 
 Recipe chickenRecipe = new Recipe(
     directions:
@@ -362,7 +362,9 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
     'Bacon',
     'Rice',
     'Lettuce'
-  ]; //List of ingredients can be appended here; NOT USED IN THIS CLASS YET
+  ]; //List of ingredients can be appended here
+
+  final List<int> colorCodes = <int>[300, 200, 300, 200];
 
   bool _isSelected = false;
   final _width = 130.0; //sets consistent width for checkboxes
@@ -371,101 +373,27 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       height: 50,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal, //makes scrolling go left and right
-        children: <Widget>[
-          /* MORE NOTES
-              -Need a way to create instance/(object?) of each container for the ingredient checkboxes
-              -Need to fix checkboxes to not all be checked when one is selected
-              -Need a way for label(text) to dynamically change size when it doesn't fit in the checkbox container
-              OR maybe make checkbox container bigger to where majority of words(ingredients) fit
-           */
-          Container(
+        itemCount: ingredients.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
             width: _width,
-            color: Colors.grey[300],
+            color: Colors.grey[colorCodes[index]],
             child: LabeledCheckbox(
-              label: 'Egg',
+              label: '${ingredients[index]}',
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               value:
                   _isSelected, //<== Accessed and changed throughout the whole class
               onChanged: (bool newValue) {
                 setState(() {
-                  _isSelected = newValue;
+                  //_isSelected = newValue;
+                  newValue = true;
                 });
               },
             ),
-          ),
-          Container(
-            width: _width,
-            color: Colors.grey[200],
-            child: LabeledCheckbox(
-              label: 'Bacon',
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              value: _isSelected,
-              onChanged: (bool newValue) {
-                setState(() {
-                  _isSelected = newValue;
-                });
-              },
-            ),
-          ),
-          Container(
-            width: _width,
-            color: Colors.grey[300],
-            child: LabeledCheckbox(
-              label: 'Lettuce',
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              value: _isSelected,
-              onChanged: (bool newValue) {
-                setState(() {
-                  _isSelected = newValue;
-                });
-              },
-            ),
-          ),
-          Container(
-            width: _width,
-            color: Colors.grey[200],
-            child: LabeledCheckbox(
-              label: 'Rice',
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              value: _isSelected,
-              onChanged: (bool newValue) {
-                setState(() {
-                  _isSelected = newValue;
-                });
-              },
-            ),
-          ),
-          Container(
-            width: _width,
-            color: Colors.grey[300],
-            child: LabeledCheckbox(
-              label: 'Banana',
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              value: _isSelected,
-              onChanged: (bool newValue) {
-                setState(() {
-                  _isSelected = newValue;
-                });
-              },
-            ),
-          ),
-          Container(
-            width: _width,
-            color: Colors.grey[200],
-            child: LabeledCheckbox(
-              label: 'Chicken',
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              value: _isSelected,
-              onChanged: (bool newValue) {
-                setState(() {
-                  _isSelected = newValue;
-                });
-              },
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -499,7 +427,7 @@ class _RecipesTabWidgetState extends State<RecipesTabWidget> {
           itemCount: recipeImage.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-              color: condimentsColor,
+              color: yellowColor,
               margin: EdgeInsets.all(10),
               child: Row(
                 children: <Widget>[
