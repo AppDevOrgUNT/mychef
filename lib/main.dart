@@ -400,6 +400,13 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
   ]; //List of ingredients can be appended here for each category:
   //Proteins, grains, vegetables, fruits, and dairy
 
+  final List<bool> isSelected = <bool>[
+    false,
+    false,
+    false,
+    false
+  ]; //makes individual checkboxes selected
+
   final List<int> colorCodes = <int>[
     300,
     200,
@@ -407,18 +414,17 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
     200
   ]; //TODO: Change color for each category (for each function call)
 
-  bool _isSelected = false;
   final _width = 130.0; //sets consistent width for checkboxes
 
   Widget build(BuildContext context) {
-    return Container(
+    return new Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       height: 50,
       child: ListView.builder(
         scrollDirection: Axis.horizontal, //makes scrolling go left and right
         itemCount: ingredients.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
+          return new Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.grey[colorCodes[index]],
@@ -427,11 +433,11 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
             child: LabeledCheckbox(
               label: '${ingredients[index]}',
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              value:
-                  _isSelected, //<== Accessed and changed throughout the whole class
+              value: isSelected[
+                  index], //<== Accessed and changed throughout the whole class
               onChanged: (bool newValue) {
                 setState(() {
-                  _isSelected = newValue;
+                  isSelected[index] = newValue;
                 });
               },
             ),
