@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //the title is the app bars text
       home: MyHomePageWidget(),
     );
   } //Widget build
@@ -79,7 +78,8 @@ class MyHomePageWidget extends StatefulWidget {
 
 //RECREATING CLASS FOR MYHOMEPAGE CLASS
 class _MyHomePageWidgetState extends State<MyHomePageWidget> {
-  int _selectedIndex = 0;
+  int _selectedIndex =
+      2; //2 - Index for homepage; Makes home as default page @start up
 
   static const TextStyle optionStyle = TextStyle(
       //Text Style
@@ -89,31 +89,16 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
   static List<Widget> _widgetOptions = <Widget>[
     //Contains widgets to display for each tab; Stored in center widget
     Center(
-      //SCROLLING CHECKLIST OF INGREDIENTS
-      child: ListOfIngredientsWidget(), //Calls list of ingredients widget class
+      //SCROLLING LIST OF INGREDIENTS
+      child: ShoppingCartWidget(), //Calls list of ingredients widget class
     ),
-    // Text(
-    //   'Index 1: Recipe Output', //TODO: Find widget for multiple lines of text
-    //   style: optionStyle,
-    // ),
     Center(
-      child: RecipesWidget(),
+      //SCROLLING LIST OF RECIPES
+      child: RecipesTabWidget(),
     ),
-    ListView(
-      padding: const EdgeInsets.all(5),
-      children: <Widget>[
-        SearchTextFieldWidget(),
-        Text('Proteins'),
-        HorizontalChecklistWidget(), //Need to find a way to create an instance of this class for each category
-        Text('Grains'),
-        HorizontalChecklistWidget(),
-        Text('Vegetables'),
-        HorizontalChecklistWidget(),
-        Text('Fruits'),
-        HorizontalChecklistWidget(),
-        Text('Dairy'),
-        HorizontalChecklistWidget(),
-      ],
+    Center(
+      //HAS SEARCH BAR AND CHECKBOXES
+      child: HomeTabWidget(),
     ),
     Text(
       'Not sure what to put here',
@@ -134,10 +119,6 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
   Widget build(BuildContext context) {
     //Constructs how the page look
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text(
-      //       'Testing Navigator Bar'), //TODO: How to change text of app bar to match bottom tab
-      // ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -222,15 +203,14 @@ class _SearchTextFieldWidgetState extends State<SearchTextFieldWidget> {
 }
 
 //Class to display list of ingredients that are appended to the list
-class ListOfIngredientsWidget extends StatefulWidget {
-  ListOfIngredientsWidget({Key key}) : super(key: key);
+class ShoppingCartWidget extends StatefulWidget {
+  ShoppingCartWidget({Key key}) : super(key: key);
 
   @override
-  _ListOfIngredientsWidgetState createState() =>
-      _ListOfIngredientsWidgetState();
+  _ShoppingCartWidgetState createState() => _ShoppingCartWidgetState();
 }
 
-class _ListOfIngredientsWidgetState extends State<ListOfIngredientsWidget> {
+class _ShoppingCartWidgetState extends State<ShoppingCartWidget> {
   final List<String> ingredients = <String>[
     'Eggs',
     'Bacon',
@@ -253,21 +233,73 @@ class _ListOfIngredientsWidgetState extends State<ListOfIngredientsWidget> {
   ]; //List of ingredients can be appended here
   //final List<int> colorCodes = <int>[600, 500, 400, 300];
 
+  @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      //Creates dynamic list of ingredients from the list
-      padding: const EdgeInsets.all(8),
-      itemCount: ingredients.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          height: 30,
-          //color: Colors.indigo[colorCodes[index]],
-          child: Center(
-            child: Text('${ingredients[index]}'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Shopping Cart'),
+        backgroundColor: interfaceColor,
+      ),
+      body: Center(
+        child: ListView.separated(
+          //Creates dynamic list of ingredients from the list
+          padding: const EdgeInsets.all(8),
+          itemCount: ingredients.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              height: 30,
+              //color: Colors.indigo[colorCodes[index]],
+              child: Center(
+                child: Text('${ingredients[index]}'),
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
+        ),
+      ),
+    );
+  }
+}
+
+class HomeTabWidget extends StatefulWidget {
+  HomeTabWidget({Key key}) : super(key: key);
+
+  @override
+  _HomeTabWidgetState createState() => _HomeTabWidgetState();
+}
+
+class _HomeTabWidgetState extends State<HomeTabWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Let\'s Cook!',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+        ),
+        backgroundColor: interfaceColor,
+      ),
+      body: Center(
+        child: ListView(
+          padding: const EdgeInsets.all(5),
+          children: <Widget>[
+            SearchTextFieldWidget(),
+            Text('Proteins'),
+            HorizontalChecklistWidget(), //Need to find a way to create an instance of this class for each category
+            Text('Grains'),
+            HorizontalChecklistWidget(),
+            Text('Vegetables'),
+            HorizontalChecklistWidget(),
+            Text('Fruits'),
+            HorizontalChecklistWidget(),
+            Text('Dairy'),
+            HorizontalChecklistWidget(),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -439,14 +471,14 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
   }
 }
 
-class RecipesWidget extends StatefulWidget {
-  RecipesWidget({Key key}) : super(key: key);
+class RecipesTabWidget extends StatefulWidget {
+  RecipesTabWidget({Key key}) : super(key: key);
 
   @override
-  _RecipesWidgetState createState() => _RecipesWidgetState();
+  _RecipesTabWidgetState createState() => _RecipesTabWidgetState();
 }
 
-class _RecipesWidgetState extends State<RecipesWidget> {
+class _RecipesTabWidgetState extends State<RecipesTabWidget> {
   //Create a list of ingredients for the list view widget
   final List<String> recipeName = <String>['Chicken', 'Pasta'];
   final List<String> recipeImage = <String>[
@@ -1136,7 +1168,7 @@ class _SubPageChicken extends State<SubPageChicken> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Here is your Recipe!'),
+        title: Text('(Recipe Name)'),
         backgroundColor: interfaceColor,
       ),
       body: Center(
@@ -1156,8 +1188,7 @@ class _SubPageChicken extends State<SubPageChicken> {
                     Text("prepTime: " + chickenRecipe.prepTime.toString()),
                     Text("totalCookTime:  " +
                         chickenRecipe.totalCookTime.toString()),
-                    Text(
-                        "meal type:  " + chickenRecipe.thisMealType.toString()),
+                    Text("meal type: " + chickenRecipe.thisMealType.toString()),
                   ],
                 ),
               );
