@@ -11,6 +11,15 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 
 var _currentIndex = 0; //Global Variable for page index
 
+//App colors
+const interfaceColor = const Color.fromARGB(0xff, 0x79, 0xA5, 0x4E);
+const fruitsColor = const Color.fromARGB(0xff, 0xA1, 0x79, 0xBC);
+const vegetablesColor = const Color.fromARGB(0xff, 0x79, 0xA5, 0x4E);
+const grainsColor = const Color.fromARGB(0xff, 0xE6, 0x8A, 0x00);
+const proteinColor = const Color.fromARGB(0xff, 0xC6, 0x5D, 0x3E);
+const dairyColor = const Color.fromARGB(0xff, 0x7B, 0xA4, 0xDD);
+const condimentsColor = const Color.fromARGB(0xff, 0xEB, 0xB0, 0x00);
+
 Recipe chickenRecipe = new Recipe(
     directions:
         "Step 1\nPreheat oven to 350 degrees F (175 degrees C).\n\nStep 2\nPlace chicken in a roasting pan, and season generously inside and out with salt and pepper. Sprinkle inside and out with onion powder. Place 3 tablespoons margarine in the chicken cavity. Arrange dollops of the remaining margarine around the chicken's exterior. Cut the celery into 3 or 4 pieces, and place in the chicken cavity.\n\nStep 3\nBake uncovered 1 hour and 15 minutes in the preheated oven, to a minimum internal temperature of 180 degrees F (82 degrees C). Remove from heat, and baste with melted margarine and drippings. Cover with aluminum foil, and allow to rest about 30 minutes before serving.\n\n",
@@ -80,26 +89,16 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
   static List<Widget> _widgetOptions = <Widget>[
     //Contains widgets to display for each tab; Stored in center widget
     Center(
+      //SCROLLING CHECKLIST OF INGREDIENTS
       child: ListOfIngredientsWidget(), //Calls list of ingredients widget class
     ),
-    Text(
-      'Index 1: Dashboard', //TODO: Find widget for multiple lines of text
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Home', //SCROLLING CHECKLIST OF INGREDIENTS
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Favorites',
-      style: optionStyle,
-    ),
-    // Center(
-    //   //Do column widget: https://api.flutter.dev/flutter/widgets/Column-class.html
-    //   //Centers the search text widget class
-    //   child:
-    //       SearchTextFieldWidget(), //Calls the Search Widget Class //TODO: Implement ListView for search class and horizontal scrolling checklist
+    // Text(
+    //   'Index 1: Recipe Output', //TODO: Find widget for multiple lines of text
+    //   style: optionStyle,
     // ),
+    Center(
+      child: RecipesWidget(),
+    ),
     ListView(
       padding: const EdgeInsets.all(5),
       children: <Widget>[
@@ -116,6 +115,14 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
         HorizontalChecklistWidget(),
       ],
     ),
+    Text(
+      'Not sure what to put here',
+      style: optionStyle,
+    ),
+    Text(
+      'Settings for User login',
+      style: optionStyle,
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -127,10 +134,10 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
   Widget build(BuildContext context) {
     //Constructs how the page look
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-            'Testing Navigator Bar'), //TODO: How to change text of app bar to match bottom tab
-      ),
+      // appBar: AppBar(
+      //   title: const Text(
+      //       'Testing Navigator Bar'), //TODO: How to change text of app bar to match bottom tab
+      // ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -143,8 +150,8 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
             //backgroundColor: Colors.blue[200],
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            icon: Icon(Icons.article_rounded),
+            label: 'Recipes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -155,8 +162,8 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
             label: 'Favorites',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.view_headline_sharp),
+            label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -432,6 +439,73 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
   }
 }
 
+class RecipesWidget extends StatefulWidget {
+  RecipesWidget({Key key}) : super(key: key);
+
+  @override
+  _RecipesWidgetState createState() => _RecipesWidgetState();
+}
+
+class _RecipesWidgetState extends State<RecipesWidget> {
+  //Create a list of ingredients for the list view widget
+  final List<String> recipeName = <String>['Chicken', 'Pasta'];
+  final List<String> recipeImage = <String>[
+    'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/11/2/0/DV1510H_fried-chicken-recipe-10_s4x3.jpg.rend.hgtvcom.616.462.suffix/1568222255998.jpeg',
+    'https://lilluna.com/wp-content/uploads/2017/10/penne-pasta-resize-3-500x500.jpg',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recipes'),
+        backgroundColor: interfaceColor,
+      ),
+      body: Center(
+        child: ListView.separated(
+          padding: const EdgeInsets.all(10.0),
+          itemCount: recipeImage.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              color: condimentsColor,
+              margin: EdgeInsets.all(10),
+              child: Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.check),
+                    color: Colors.white,
+                    onPressed: () {
+                      navigateToRecipePage(context);
+                    },
+                  ),
+                  Image.network('${recipeImage[index]}',
+                      height: 100, fit: BoxFit.fill),
+                  Text(
+                    '${recipeName[index]}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
+        ),
+      ),
+    );
+  }
+
+  Future navigateToRecipePage(context) async {
+    //Make it go to generalized subpage class for all recipes
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SubPageChicken()));
+  }
+}
+
 //This is the class that is now "stateful" from "MyHomePage" class
 // class _MyHomePageState extends State<MyHomePage> {
 //   var recipe1 = new Recipe();
@@ -530,11 +604,11 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
 //       ),
 //     );
 //   }
-//
+// //
 //   Future navigateToSubPage(context) async {
 //     Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
 //   } //Future
-//
+// //
 //   Future navigateTo_MyHomePageState(context) async {
 //     Navigator.push(
 //         context, MaterialPageRoute(builder: (context) => MyHomePage()));
@@ -619,7 +693,7 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
 //                   child: Row(
 //                       mainAxisAlignment: MainAxisAlignment.start,
 //                       children: <Widget>[
-//                         //recipe 1
+//                         //recipe 1 //TODO: RECIPE Classes
 //                         IconButton(
 //                           icon: Icon(Icons.home),
 //                           tooltip: 'look at chicken recipe',
@@ -684,7 +758,7 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
 //     Navigator.push(
 //         context, MaterialPageRoute(builder: (context) => SubPagePasta()));
 //   }
-// } //SubPage
+//} //SubPage
 //
 // //The class without the prefixed _ is creating the stateful widget
 // //For the class that is prefixed with _
@@ -1040,167 +1114,120 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
 //   }
 // } //_Forth_Page Class
 //
-// class SubPageChicken extends StatefulWidget {
-//   SubPageChicken({Key key, this.title}) : super(key: key);
-//   final String title;
+
+/*
+    This can be the skeleton code for the recipe class.
+ */
+
+class SubPageChicken extends StatefulWidget {
+  SubPageChicken({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _SubPageChicken createState() => _SubPageChicken();
+} //Forth_Page Class
+
+class _SubPageChicken extends State<SubPageChicken> {
+  final List<String> recipeImage = <String>[
+    'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/11/2/0/DV1510H_fried-chicken-recipe-10_s4x3.jpg.rend.hgtvcom.616.462.suffix/1568222255998.jpeg'
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Here is your Recipe!'),
+        backgroundColor: interfaceColor,
+      ),
+      body: Center(
+        child: ListView.builder(
+            padding: const EdgeInsets.all(10.0),
+            itemCount: recipeImage.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Center(
+                child: Column(
+                  children: <Widget>[
+                    Image.network('${recipeImage[index]}',
+                        //height: 500,
+                        fit: BoxFit.fill),
+                    Text(chickenRecipe.directions),
+                    Text("calories: " + chickenRecipe.calories.toString()),
+                    Text("servings: " + chickenRecipe.servings.toString()),
+                    Text("prepTime: " + chickenRecipe.prepTime.toString()),
+                    Text("totalCookTime:  " +
+                        chickenRecipe.totalCookTime.toString()),
+                    Text(
+                        "meal type:  " + chickenRecipe.thisMealType.toString()),
+                  ],
+                ),
+              );
+            }),
+      ),
+    );
+  }
+
+  // Future navigateToSubPage(context) async {
+  //   Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
+  // } //Future
+  //
+  // Future navigateTo_Second_Page(context) async {
+  //   Navigator.push(
+  //       context, MaterialPageRoute(builder: (context) => Second_Page()));
+  // } //Future
+  //
+  // Future navigateTo_Third_Page(context) async {
+  //   Navigator.push(
+  //       context, MaterialPageRoute(builder: (context) => Third_Page()));
+  // }
+  //
+  // Future navigateTo_Forth_Page(context) async {
+  //   Navigator.push(
+  //       context, MaterialPageRoute(builder: (context) => Forth_Page()));
+  // }
+
+  void backToMainPage(context) {
+    Navigator.pop(context);
+  }
+} //SubPageChicken Class
+
 //
-//   @override
-//   _SubPageChicken createState() => _SubPageChicken();
-// } //Forth_Page Class
-//
-// class _SubPageChicken extends State<SubPageChicken> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Here is your Recipe!'),
-//         backgroundColor: Colors.blue,
-//       ),
-//       body: Center(
-//           child: Column(
-//               mainAxisAlignment: MainAxisAlignment.end,
-//               children: <Widget>[
-//             //display recipe info
-//             Expanded(
-//               child: new Padding(
-//                   padding: const EdgeInsets.all(20.0),
-//                   child: Column(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       children: <Widget>[
-//                         Text(chickenRecipe.directions),
-//                         Text("calories: " + chickenRecipe.calories.toString()),
-//                         Text("servings: " + chickenRecipe.servings.toString()),
-//                         Text("prepTime: " + chickenRecipe.prepTime.toString()),
-//                         Text("totalCookTime:  " +
-//                             chickenRecipe.totalCookTime.toString()),
-//                         Text("meal type:  " +
-//                             chickenRecipe.thisMealType.toString()),
-//                       ])),
-//             ),
-//
-//             Text('Click button to back to Main Page'),
-//             RaisedButton(
-//               textColor: Colors.white,
-//               color: Colors.blue,
-//               child: Text('Back to Previous Page'),
-//               onPressed: () {
-//                 backToMainPage(context);
-//               },
-//             )
-//           ])),
-//       bottomNavigationBar: BottomNavigationBar(
-//         onTap: (index) {
-//           setState(() {
-//             _currentIndex = index;
-//           });
-//           if (index == 1) {
-//             navigateTo_Second_Page(context);
-//           } else if (index == 2) {
-//             navigateTo_Third_Page(context);
-//           } else if (index == 3) {
-//             navigateTo_Forth_Page(context);
-//           } else if (index == 4) {
-//             navigateToSubPage(context);
-//           }
-//         },
-//         currentIndex: _currentIndex,
-//         type: BottomNavigationBarType.shifting,
-//         backgroundColor: Colors.lightBlue,
-//         iconSize: 25,
-//         items: [
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.add_shopping_cart),
-//               title: Text('#1'),
-//               backgroundColor: Colors.lightBlue),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.dashboard),
-//               title: Text('#2'),
-//               backgroundColor: Colors.lightBlue),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.home),
-//               title: Text('#3'),
-//               backgroundColor: Colors.lightBlue),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.favorite),
-//               title: Text('#4'),
-//               backgroundColor: Colors.lightBlue),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.search),
-//               title: Text('#5'),
-//               backgroundColor: Colors.lightBlue),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   Future navigateToSubPage(context) async {
-//     Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
-//   } //Future
-//
-//   Future navigateTo_Second_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Second_Page()));
-//   } //Future
-//
-//   Future navigateTo_Third_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Third_Page()));
-//   }
-//
-//   Future navigateTo_Forth_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Forth_Page()));
-//   }
-//
-//   void backToMainPage(context) {
-//     Navigator.pop(context);
-//   }
-// } //SubPageChicken Class
-//
-// class SubPagePasta extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('Sub Page | Pasta'),
-//           backgroundColor: Colors.blue,
-//         ),
-//         body: Center(
-//             child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.end,
-//                 children: <Widget>[
-//               //display recipe info
-//               Expanded(
-//                 child: new Padding(
-//                     padding: const EdgeInsets.all(20.0),
-//                     child: Column(
-//                         mainAxisAlignment: MainAxisAlignment.start,
-//                         children: <Widget>[
-//                           Text(pastaRecipe.directions),
-//                           Text("calories: " + pastaRecipe.calories.toString()),
-//                           Text("servings: " + pastaRecipe.servings.toString()),
-//                           Text("prepTime: " + pastaRecipe.prepTime.toString()),
-//                           Text("totalCookTime:  " +
-//                               pastaRecipe.totalCookTime.toString()),
-//                           Text("meal type:  " +
-//                               pastaRecipe.thisMealType.toString()),
-//                         ])),
-//               ),
-//
-//               Text('Click button to back to Main Page'),
-//               RaisedButton(
-//                 textColor: Colors.white,
-//                 color: Colors.blue,
-//                 child: Text('Back to Previous Page'),
-//                 onPressed: () {
-//                   backToMainPage(context);
-//                 },
-//               )
-//             ])));
-//   }
-//
-//   void backToMainPage(context) {
-//     Navigator.pop(context);
-//   }
-// } //SubPagePasta Class
+class SubPagePasta extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sub Page | Pasta'),
+        backgroundColor: Colors.blue,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            //display recipe info
+            Expanded(
+              child: new Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(pastaRecipe.directions),
+                        Text("calories: " + pastaRecipe.calories.toString()),
+                        Text("servings: " + pastaRecipe.servings.toString()),
+                        Text("prepTime: " + pastaRecipe.prepTime.toString()),
+                        Text("totalCookTime:  " +
+                            pastaRecipe.totalCookTime.toString()),
+                        Text("meal type:  " +
+                            pastaRecipe.thisMealType.toString()),
+                      ])),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // void backToMainPage(context) {
+  //   Navigator.pop(context);
+  // }
+} //SubPagePasta Class
 // //testing
