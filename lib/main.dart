@@ -91,26 +91,24 @@ class _MyHomePageWidgetState extends State<MyHomePageWidget> {
   static List<Widget> _widgetOptions = <Widget>[
     //Contains widgets to display for each tab; Stored in center widget
     Center(
-      //SCROLLING LIST OF INGREDIENTS
-      child: ShoppingCartWidget(), //Calls list of ingredients widget class
+      //SHOPPING CART TAB
+      child: ShoppingCartWidget(),
     ),
     Center(
-      //SCROLLING LIST OF RECIPES
+      //RECIPES TAB
       child: RecipesTabWidget(),
     ),
     Center(
-      //HAS SEARCH BAR AND CHECKBOXES
+      //HOME TAB
       child: HomeTabWidget(),
     ),
     Text(
+      //FAVORITES TAB
       'Not sure what to put here',
       style: optionStyle,
     ),
-    // Text(
-    //   'Settings for User login',
-    //   style: optionStyle,
-    // ),
     Center(
+      //SETTINGS TAB
       child: SettingTabWidget(),
     ),
   ];
@@ -302,36 +300,50 @@ class _HomeTabWidgetState extends State<HomeTabWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Let\'s Cook!',
-          style: style,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          //TODO: Format app bar based on group 4's design
+          title: Text(
+            'Let\'s Cook!',
+            style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 30,
+                fontWeight: FontWeight.bold),
+          ),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  SearchTextFieldWidget(); //TODO: Search bar should pop up after pressing this
+                }),
+          ],
+          backgroundColor: interfaceColor,
         ),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                SearchTextFieldWidget(); //TODO: Search bar should pop up after pressing this
-              }),
-        ],
-        backgroundColor: interfaceColor,
       ),
       body: Center(
         child: ListView(
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           children: <Widget>[
             //SearchTextFieldWidget(),
-            SizedBox(height: 25.0),
+            SizedBox(height: 30.0),
             Text('Proteins', style: style),
-            HorizontalChecklistWidget(), //Need to find a way to create an instance of this class for each category
+            ProteinsChecklistWidget(), //Need to find a way to create an instance of this class for each category
+            SizedBox(height: 30.0),
             Text('Grains', style: style),
-            HorizontalChecklistWidget(),
+            GrainsChecklistWidget(),
+            SizedBox(height: 30.0),
             Text('Vegetables', style: style),
-            HorizontalChecklistWidget(),
+            VegetablesChecklistWidget(),
+            SizedBox(height: 30.0),
             Text('Fruits', style: style),
-            HorizontalChecklistWidget(),
+            FruitsChecklistWidget(),
+            SizedBox(height: 30.0),
             Text('Dairy', style: style),
-            HorizontalChecklistWidget(),
+            DairyChecklistWidget(),
+            SizedBox(height: 30.0),
+            Text('Sauces & Condiments', style: style),
+            SauceChecklistWidget(),
           ],
         ),
       ),
@@ -353,6 +365,8 @@ class LabeledCheckbox extends StatelessWidget {
   final bool value;
   final Function onChanged;
 
+  final checkboxSize = 10.0;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -364,12 +378,35 @@ class LabeledCheckbox extends StatelessWidget {
         child: Row(
           //creates a "custom" checkbox instead of using CheckboxListTile Widget
           children: <Widget>[
-            Expanded(child: Text(label, style: style)),
-            Checkbox(
-              value: value,
-              onChanged: (bool newValue) {
-                onChanged(newValue);
-              },
+            Container(
+              //For the checkbox (circle)
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30), //rounds off corners
+                color: Colors.white,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5), //TODO: Make check mark bigger
+                child: value
+                    ? Icon(Icons.check_sharp,
+                        size: checkboxSize, color: Colors.black)
+                    : Icon(Icons.check_box_outline_blank,
+                        size: checkboxSize, color: Colors.white),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -378,63 +415,53 @@ class LabeledCheckbox extends StatelessWidget {
   }
 }
 
-//Class that implements horizontal scrolling checklist
-class HorizontalChecklistWidget extends StatefulWidget {
-  HorizontalChecklistWidget({Key key}) : super(key: key);
+//TODO: Find a way to create generalized class for each checklist widget
+class ProteinsChecklistWidget extends StatefulWidget {
+  ProteinsChecklistWidget({Key key}) : super(key: key);
 
   @override
-  _HorizontalChecklistWidgetState createState() =>
-      _HorizontalChecklistWidgetState();
+  _ProteinsChecklistWidgetState createState() =>
+      _ProteinsChecklistWidgetState();
 }
 
-/* NOTES:
-    -Need a way to create a new instance/(object?) of HorizontalChecklistWidget class for each category
-*/
-
-class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
+class _ProteinsChecklistWidgetState extends State<ProteinsChecklistWidget> {
   final List<String> ingredients = <String>[
-    'Eggs',
+    'Beef',
     'Bacon',
-    'Rice',
-    'Lettuce'
+    'Pork',
+    'Chicken',
+    'Egg'
   ]; //List of ingredients can be appended here for each category:
-  //Proteins, grains, vegetables, fruits, and dairy
 
   final List<bool> isSelected = <bool>[
+    false,
     false,
     false,
     false,
     false
   ]; //makes individual checkboxes selected
 
-  final List<int> colorCodes = <int>[
-    300,
-    200,
-    300,
-    200
-  ]; //TODO: Change color for each category (for each function call)
-
-  final _width = 130.0; //sets consistent width for checkboxes
+  final categoryColor = redColor;
+  final _width = 150.0; //sets consistent width for checkboxes
 
   Widget build(BuildContext context) {
     return new Container(
       margin: EdgeInsets.symmetric(vertical: 10),
-      height: 50,
-      child: ListView.builder(
+      height: 30,
+      child: ListView.separated(
         scrollDirection: Axis.horizontal, //makes scrolling go left and right
         itemCount: ingredients.length,
         itemBuilder: (BuildContext context, int index) {
           return new Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Colors.grey[colorCodes[index]],
+              color: categoryColor,
             ),
             width: _width,
             child: LabeledCheckbox(
               label: '${ingredients[index]}',
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              value: isSelected[
-                  index], //<== Accessed and changed throughout the whole class
+              value: isSelected[index],
               onChanged: (bool newValue) {
                 setState(() {
                   isSelected[index] = newValue;
@@ -443,6 +470,315 @@ class _HorizontalChecklistWidgetState extends State<HorizontalChecklistWidget> {
             ),
           );
         },
+        separatorBuilder: (BuildContext context, int index) => SizedBox(
+          width: 10.0,
+        ),
+      ),
+    );
+  }
+}
+
+class GrainsChecklistWidget extends StatefulWidget {
+  GrainsChecklistWidget({Key key}) : super(key: key);
+
+  @override
+  _GrainsChecklistWidgetState createState() => _GrainsChecklistWidgetState();
+}
+
+class _GrainsChecklistWidgetState extends State<GrainsChecklistWidget> {
+  final List<String> ingredients = <String>[
+    'White Rice',
+    'Brown Rice',
+    'Tortilla',
+    'Popcorn',
+    'Bread'
+  ]; //List of ingredients can be appended here for each category:
+
+  final List<bool> isSelected = <bool>[
+    false,
+    false,
+    false,
+    false,
+    false
+  ]; //makes individual checkboxes selected
+
+  final categoryColor = orangeColor;
+  final _width = 150.0; //sets consistent width for checkboxes
+
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      height: 30,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal, //makes scrolling go left and right
+        itemCount: ingredients.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: categoryColor,
+            ),
+            width: _width,
+            child: LabeledCheckbox(
+              label: '${ingredients[index]}',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: isSelected[index],
+              onChanged: (bool newValue) {
+                setState(() {
+                  isSelected[index] = newValue;
+                });
+              },
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => SizedBox(
+          width: 10.0,
+        ),
+      ),
+    );
+  }
+}
+
+class VegetablesChecklistWidget extends StatefulWidget {
+  VegetablesChecklistWidget({Key key}) : super(key: key);
+
+  @override
+  _VegetablesChecklistWidgetState createState() =>
+      _VegetablesChecklistWidgetState();
+}
+
+class _VegetablesChecklistWidgetState extends State<VegetablesChecklistWidget> {
+  final List<String> ingredients = <String>[
+    'Romaine Lettuce',
+    'Broccoli',
+    'Carrot',
+    'Spinach',
+    'Squash'
+  ]; //List of ingredients can be appended here for each category:
+
+  final List<bool> isSelected = <bool>[
+    false,
+    false,
+    false,
+    false,
+    false
+  ]; //makes individual checkboxes selected
+
+  final categoryColor = greenColor;
+  final _width = 150.0; //sets consistent width for checkboxes
+
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      height: 30,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal, //makes scrolling go left and right
+        itemCount: ingredients.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: categoryColor,
+            ),
+            width: _width,
+            child: LabeledCheckbox(
+              label: '${ingredients[index]}',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: isSelected[index],
+              onChanged: (bool newValue) {
+                setState(() {
+                  isSelected[index] = newValue;
+                });
+              },
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => SizedBox(
+          width: 10.0,
+        ),
+      ),
+    );
+  }
+}
+
+class FruitsChecklistWidget extends StatefulWidget {
+  FruitsChecklistWidget({Key key}) : super(key: key);
+
+  @override
+  _FruitsChecklistWidgetState createState() => _FruitsChecklistWidgetState();
+}
+
+class _FruitsChecklistWidgetState extends State<FruitsChecklistWidget> {
+  final List<String> ingredients = <String>[
+    'Mango',
+    'Banana',
+    'Grapes',
+    'Orange',
+    'Strawberry'
+  ]; //List of ingredients can be appended here for each category:
+
+  final List<bool> isSelected = <bool>[
+    false,
+    false,
+    false,
+    false,
+    false
+  ]; //makes individual checkboxes selected
+
+  final categoryColor = purpleColor;
+  final _width = 150.0; //sets consistent width for checkboxes
+
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      height: 30,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal, //makes scrolling go left and right
+        itemCount: ingredients.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: categoryColor,
+            ),
+            width: _width,
+            child: LabeledCheckbox(
+              label: '${ingredients[index]}',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: isSelected[index],
+              onChanged: (bool newValue) {
+                setState(() {
+                  isSelected[index] = newValue;
+                });
+              },
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => SizedBox(
+          width: 10.0,
+        ),
+      ),
+    );
+  }
+}
+
+class DairyChecklistWidget extends StatefulWidget {
+  DairyChecklistWidget({Key key}) : super(key: key);
+
+  @override
+  _DairyChecklistWidgetState createState() => _DairyChecklistWidgetState();
+}
+
+class _DairyChecklistWidgetState extends State<DairyChecklistWidget> {
+  final List<String> ingredients = <String>[
+    'Goat Cheese',
+    'Butter',
+    'Greek Yogurt',
+    'Whipped Cream',
+    'Cream Cheese'
+  ]; //List of ingredients can be appended here for each category:
+
+  final List<bool> isSelected = <bool>[
+    false,
+    false,
+    false,
+    false,
+    false
+  ]; //makes individual checkboxes selected
+
+  final categoryColor = blueColor;
+  final _width = 150.0; //sets consistent width for checkboxes
+
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      height: 30,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal, //makes scrolling go left and right
+        itemCount: ingredients.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: categoryColor,
+            ),
+            width: _width,
+            child: LabeledCheckbox(
+              label: '${ingredients[index]}',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: isSelected[index],
+              onChanged: (bool newValue) {
+                setState(() {
+                  isSelected[index] = newValue;
+                });
+              },
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => SizedBox(
+          width: 10.0,
+        ),
+      ),
+    );
+  }
+}
+
+class SauceChecklistWidget extends StatefulWidget {
+  SauceChecklistWidget({Key key}) : super(key: key);
+
+  @override
+  _SauceChecklistWidgetState createState() => _SauceChecklistWidgetState();
+}
+
+class _SauceChecklistWidgetState extends State<SauceChecklistWidget> {
+  final List<String> ingredients = <String>[
+    'Ketchup',
+    'Mayonnaise',
+    'Mustard',
+    'Relish',
+    'Soy Sauce'
+  ]; //List of ingredients can be appended here for each category:
+
+  final List<bool> isSelected = <bool>[
+    false,
+    false,
+    false,
+    false,
+    false
+  ]; //makes individual checkboxes selected
+
+  final categoryColor = yellowColor;
+  final _width = 150.0; //sets consistent width for checkboxes
+
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      height: 30,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal, //makes scrolling go left and right
+        itemCount: ingredients.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: categoryColor,
+            ),
+            width: _width,
+            child: LabeledCheckbox(
+              label: '${ingredients[index]}',
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              value: isSelected[index],
+              onChanged: (bool newValue) {
+                setState(() {
+                  isSelected[index] = newValue;
+                });
+              },
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => SizedBox(
+          width: 10.0,
+        ),
       ),
     );
   }
@@ -458,61 +794,170 @@ class RecipesTabWidget extends StatefulWidget {
 
 class _RecipesTabWidgetState extends State<RecipesTabWidget> {
   //Create a list of ingredients for the list view widget
-  final List<String> recipeName = <String>['Chicken', 'Pasta'];
+  final List<String> recipeName = <String>[
+    'Chicken',
+    'Pasta',
+    'Recipe Name',
+    'Recipe Name',
+    'Recipe Name',
+    'Recipe Name',
+    'Recipe Name'
+  ];
+  final List<String> recipeMealType = <String>[
+    'Breakfast',
+    'Lunch',
+    'Meal',
+    'Meal',
+    'Meal',
+    'Meal',
+    'Meal'
+  ];
+  final List<String> recipeCuisine = <String>[
+    'Cuisine',
+    'Cuisine',
+    'Cuisine',
+    'Cuisine',
+    'Cuisine',
+    'Cuisine',
+    'Cuisine'
+  ];
+  final List<String> recipeTime = <String>[
+    '45 minutes',
+    'Time',
+    'Time',
+    'Time',
+    'Time',
+    'Time',
+    'Time'
+  ];
+  final List<String> recipeDifficulty = <String>[
+    'Medium',
+    'Difficulty',
+    'Difficulty',
+    'Difficulty',
+    'Difficulty',
+    'Difficulty',
+    'Difficulty'
+  ];
   final List<String> recipeImage = <String>[
     'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/11/2/0/DV1510H_fried-chicken-recipe-10_s4x3.jpg.rend.hgtvcom.616.462.suffix/1568222255998.jpeg',
     'https://lilluna.com/wp-content/uploads/2017/10/penne-pasta-resize-3-500x500.jpg',
+    'https://countrylakesdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg',
+    'https://countrylakesdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg',
+    'https://countrylakesdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg',
+    'https://countrylakesdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg',
+    'https://countrylakesdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Recipes',
-          style: style,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          //TODO: Format app bar based on group 4's design
+          title: Text(
+            'Recipes (${recipeName.length})',
+            style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 30,
+                fontWeight: FontWeight.bold),
+          ),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  SearchTextFieldWidget(); //TODO: Search bar should pop up after pressing this
+                }),
+          ],
+          backgroundColor: interfaceColor,
         ),
-        backgroundColor: interfaceColor,
       ),
       body: Center(
         child: ListView.separated(
-          padding: const EdgeInsets.all(10.0),
-          itemCount: recipeImage.length,
+          padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+          itemCount: recipeName.length,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15), //rounds off corners
-                color: yellowColor,
-              ),
-              margin: EdgeInsets.all(10),
-              child: Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.check),
-                    color: Colors.white,
-                    onPressed: () {
-                      navigateToRecipePage(context);
-                    },
-                  ),
-                  Image.network('${recipeImage[index]}',
-                      height: 100, fit: BoxFit.fill),
-                  Text(
-                    '${recipeName[index]}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
+            return FlatButton(
+              onPressed: () {
+                navigateToRecipePage(
+                    context); //when button pressed, navigate to subpage
+              },
+              child: Container(
+                height: 90,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15), //rounds off corners
+                  color: yellowColor,
+                ),
+                margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: Row(
+                  children: <Widget>[
+                    ClipRRect(
+                      //Makes corner of image rounded
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        bottomLeft: Radius.circular(15),
+                      ),
+                      child: Image.network('${recipeImage[index]}',
+                          height: 100, width: 120, fit: BoxFit.fill),
                     ),
-                  ),
-                ],
+                    // Image.network('${recipeImage[index]}',
+                    //     height: 100, fit: BoxFit.fill),
+                    Expanded(
+                      child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '${recipeName[index]}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Montserrat',
+                                ),
+                              ),
+                              Text(
+                                '${recipeMealType[index]}, ${recipeCuisine[index]}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'Montserrat',
+                                ),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.access_time,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                  Text(
+                                    ' ${recipeTime[index]}, ${recipeDifficulty[index]}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: 'Montserrat',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
           separatorBuilder: (BuildContext context, int index) => SizedBox(
             height: 1.0,
           ),
-          //const Divider(),
         ),
       ),
     );
@@ -632,615 +1077,6 @@ class _SettingTabWidgetState extends State<SettingTabWidget> {
   }
 }
 
-//This is the class that is now "stateful" from "MyHomePage" class
-// class _MyHomePageState extends State<MyHomePage> {
-//   var recipe1 = new Recipe();
-//   var ingredient1 = new Ingredient();
-//
-//   @override //This is now building a widget / homepage
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         //AppBar and the Text is the title from above
-//         title: Text(widget.title),
-//       ),
-//       body: Padding(
-//         //Just formatting
-//         padding: const EdgeInsets.all(15.0),
-//         child: Center(
-//             //This is the "child" which has another "child" below it
-//             child: Column(
-//                 //More formatting
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 crossAxisAlignment: CrossAxisAlignment.stretch,
-//                 children: <Widget>[
-//               //The child "Column" has a list of widgets
-//               /*
-//                   ListView.builder(itemBuilder:
-//                   itemCount: list.length,
-//                 ),
-//                 */
-//               Text('Click button to move to search'),
-//               RaisedButton(
-//                 textColor: Colors.white,
-//                 color: Colors.blue,
-//                 child: Text('Go to search results'),
-//                 onPressed: () {
-//                   //When the RaisedButton widget is pressed
-//                   navigateToSubPage(context); //It will navigateTo"SubPage"
-//                 },
-//               )
-//             ])),
-//       ),
-//       //This is the widget that is on the bottom as the name implies
-//       bottomNavigationBar: BottomNavigationBar(
-//         onTap: (index) {
-//           //When a user taps the icons the index will become that icon
-//           setState(() {
-//             _currentIndex = index; //
-//           });
-//           if (index == 0) {
-//             //These are common if else statements with conditions for
-//             navigateTo_MyHomePageState(context);
-//           } //When the index is "0, 1,.."
-//           else if (index == 1) {
-//             //It will navigateTo"_Second_Page"
-//             navigateTo_Second_Page(context);
-//           } //Which is a class below
-//           else if (index == 2) {
-//             navigateTo_Third_Page(context);
-//           } else if (index == 3) {
-//             navigateTo_Forth_Page(context);
-//           } else if (index == 4) {
-//             navigateToSubPage(context);
-//           }
-//         },
-//         currentIndex: _currentIndex,
-//         //Create the variable "_currentIndex" which is used above for the onTap function
-//         type: BottomNavigationBarType.shifting,
-//         //Formatting for when one of the items are pressed
-//         backgroundColor: Colors.lightBlue,
-//         iconSize: 25,
-//         items: [
-//           //This begins a list of items for the bottomNavigationBAr
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.home),
-//             //You can change the Icon that the item will show by deleting "add_shopping_cart"
-//             title: Text('#1'),
-//             //This is the text that will show below the icon / its name
-//             backgroundColor: Colors.lightBlue,
-//           ),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.dashboard),
-//               title: Text('#2'),
-//               backgroundColor: Colors.lightBlue),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.home),
-//               title: Text('#3'),
-//               backgroundColor: Colors.lightBlue),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.favorite),
-//               title: Text('#4'),
-//               backgroundColor: Colors.lightBlue),
-//           BottomNavigationBarItem(
-//               icon: Icon(Icons.search),
-//               title: Text('#5'),
-//               backgroundColor: Colors.lightBlue),
-//         ],
-//       ),
-//     );
-//   }
-// //
-//   Future navigateToSubPage(context) async {
-//     Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
-//   } //Future
-// //
-//   Future navigateTo_MyHomePageState(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => MyHomePage()));
-//   } //Future
-//
-//   Future navigateTo_Second_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Second_Page()));
-//   } //Future
-//
-//   Future navigateTo_Third_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Third_Page()));
-//   } //Future
-//
-//   Future navigateTo_Forth_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Forth_Page()));
-//   } //Future
-//
-// } //class _MyHomePageState
-//
-// class MySelectionItem extends StatelessWidget {
-//   final String title;
-//   final bool isForList;
-//
-//   const MySelectionItem({Key key, this.title, this.isForList = true})
-//       : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       height: 60.0,
-//       child: isForList
-//           ? Padding(
-//               child: _buildItem(context),
-//               padding: EdgeInsets.all(10.0),
-//             )
-//           : Card(
-//               margin: EdgeInsets.symmetric(horizontal: 10.0),
-//               child: Stack(
-//                 children: <Widget>[
-//                   _buildItem(context),
-//                   Align(
-//                     alignment: Alignment.centerRight,
-//                     child: Icon(Icons.arrow_drop_down),
-//                   )
-//                 ],
-//               ),
-//             ),
-//     );
-//   } //Widget build
-//
-//   Widget _buildItem(BuildContext context) {
-//     return Container(
-//       width: MediaQuery.of(context).size.width,
-//       alignment: Alignment.center,
-//       child: FittedBox(
-//           child: Text(
-//         title,
-//       )),
-//     );
-//   } //Widget _buildItem
-// } //MySelectionItem
-//
-// class SubPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Sub Page | search'),
-//         backgroundColor: Colors.blue,
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.end,
-//           children: <Widget>[
-//             //row for 2 buttons
-//             Expanded(
-//               child: new Padding(
-//                   padding: const EdgeInsets.all(20.0),
-//                   child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       children: <Widget>[
-//                         //recipe 1 //TODO: RECIPE Classes
-//                         IconButton(
-//                           icon: Icon(Icons.home),
-//                           tooltip: 'look at chicken recipe',
-//                           onPressed: () {
-//                             navigateToSubPageChicken(context);
-//                           },
-//                         ),
-//                         Text('Chicken Recipe'),
-//
-//                         //recipe 2
-//                         IconButton(
-//                           icon: Icon(Icons.volume_up),
-//                           tooltip: 'look at pasta recipe',
-//                           onPressed: () {
-//                             navigateToSubPagePasta(context);
-//                           },
-//                         ),
-//                         Text('Pasta Recipe'),
-//                       ])),
-//             ),
-//
-//             Text('Click button to back to Main Page'),
-//             RaisedButton(
-//               textColor: Colors.white,
-//               color: Colors.blue,
-//               child: Text('Back to Main Page'),
-//               onPressed: () {
-//                 backToMainPage(context);
-//               },
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   void backToMainPage(context) {
-//     Navigator.pop(context);
-//   }
-//
-//   Future navigateToSecond_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Second_Page()));
-//   }
-//
-//   Future navigateToThird_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Third_Page()));
-//   }
-//
-//   Future navigateToForth_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Forth_Page()));
-//   }
-//
-//   Future navigateToSubPageChicken(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => SubPageChicken()));
-//   }
-//
-//   Future navigateToSubPagePasta(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => SubPagePasta()));
-//   }
-//} //SubPage
-//
-// //The class without the prefixed _ is creating the stateful widget
-// //For the class that is prefixed with _
-// class Second_Page extends StatefulWidget {
-//   Second_Page({Key key, this.title}) : super(key: key);
-//   final String title;
-//
-//   @override
-//   _Second_Page createState() => _Second_Page();
-// } //Second_Page Class
-//
-// //This class's state extends the class with the prefixed _
-// class _Second_Page extends State<Second_Page> {
-//   int _selectedIndex = 0;
-//   void _onItemTapped(int index) {
-//     //Calculate the index of bottom navigation bar??
-//     setState(() {
-//       _selectedIndex = index;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('2nd Page'),
-//           backgroundColor: Colors.blue,
-//         ),
-//         body: Padding(
-//           padding: const EdgeInsets.all(15.0),
-//           child: Center(
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               crossAxisAlignment: CrossAxisAlignment.stretch,
-//               children: <Widget>[
-//                 Text('This is the 2nd page'),
-//                 RaisedButton(
-//                   textColor: Colors.white,
-//                   color: Colors.blue,
-//                   child: Text('Go back?'),
-//                   onPressed: () {
-//                     // navigateToMyHomePage(context);
-//                   },
-//                 )
-//               ],
-//             ),
-//           ),
-//         ),
-//         bottomNavigationBar: BottomNavigationBar(
-//           items: const <BottomNavigationBarItem>[
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.add_shopping_cart),
-//               title: Text('Shopping Cart'),
-//               backgroundColor: Colors.blue,
-//             ),
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.dashboard),
-//               title: Text('Dashboard'),
-//             ),
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.home),
-//               title: Text('Home'),
-//             ),
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.favorite),
-//               title: Text('Favorite'),
-//             ),
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.search),
-//               title: Text('Search'),
-//             ),
-//           ],
-//           currentIndex: _selectedIndex,
-//           selectedItemColor: Colors.pink[200],
-//           onTap: _onItemTapped,
-//
-//           // onTap: (index) {
-//           //   setState(() {
-//           //     _currentIndex = index;
-//           //   }); //TODO: Fix if (index == 0) routing, this will crash the app and not route to "_MyHomePageState"
-//           //   if (index == 0) {
-//           //     navigateTo_MyHomePageState(context); //PROBLEM!
-//           //   } else if (index == 1) {
-//           //     navigateTo_Second_Page(context); //when second icon is clicked
-//           //   } else if (index == 2) {
-//           //     navigateTo_Third_Page(context); //when second
-//           //   } else if (index == 3) {
-//           //     navigateTo_Forth_Page(context);
-//           //   } else if (index == 4) {
-//           //     navigateToSubPage(context);
-//           //   }
-//           // },
-//           // currentIndex: _currentIndex,
-//           // type: BottomNavigationBarType.shifting,
-//           // backgroundColor: Colors.lightBlue,
-//           // iconSize: 25,
-//           // items: [
-//           //   BottomNavigationBarItem(
-//           //     icon: Icon(Icons.add_shopping_cart),
-//           //     title: Text('#1'),
-//           //     backgroundColor: Colors.lightBlue,
-//           //   ),
-//           //   BottomNavigationBarItem(
-//           //       icon: Icon(Icons.dashboard),
-//           //       title: Text('#2'),
-//           //       backgroundColor: Colors.lightBlue),
-//           //   BottomNavigationBarItem(
-//           //       icon: Icon(Icons.home),
-//           //       title: Text('#3'),
-//           //       backgroundColor: Colors.lightBlue),
-//           //   BottomNavigationBarItem(
-//           //       icon: Icon(Icons.favorite),
-//           //       title: Text('#4'),
-//           //       backgroundColor: Colors.lightBlue),
-//           //   BottomNavigationBarItem(
-//           //       icon: Icon(Icons.search),
-//           //       title: Text('#5'),
-//           //       backgroundColor: Colors.lightBlue),
-//           // ],
-//         ));
-//   }
-//
-//   Future navigateToSubPage(context) async {
-//     Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
-//   } //Future
-//
-//   Future navigateTo_MyHomePageState(context) async {
-//     //PROBLEM!
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => MyHomePage()));
-//   } //Future
-//
-//   Future navigateTo_Second_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Second_Page()));
-//   } //Future
-//
-//   Future navigateTo_Third_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Third_Page()));
-//   } //Future
-//
-//   Future navigateTo_Forth_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Forth_Page()));
-//   } //Future
-// } //_Second_Page Class
-//
-// //The class without the prefixed _ is creating the stateful widget
-// //For the class that is prefixed with _
-// class Third_Page extends StatefulWidget {
-//   Third_Page({Key key, this.title}) : super(key: key);
-//   final String title;
-//
-//   @override
-//   _Third_Page createState() => _Third_Page();
-// } //Third_Page Class
-//
-// //This class's state extends the class with the prefixed _
-// class _Third_Page extends State<Third_Page> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('3rd Page'),
-//           backgroundColor: Colors.blue,
-//         ),
-//         body: Padding(
-//           padding: const EdgeInsets.all(15.0),
-//           child: Center(
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               crossAxisAlignment: CrossAxisAlignment.stretch,
-//               children: <Widget>[
-//                 Text('This is the 3rd page'),
-//                 RaisedButton(
-//                   textColor: Colors.white,
-//                   color: Colors.blue,
-//                   child: Text('Go back?'),
-//                   onPressed: () {
-//                     // navigateToMyHomePage(context);
-//                   },
-//                 )
-//               ],
-//             ),
-//           ),
-//         ),
-//         bottomNavigationBar: BottomNavigationBar(
-//           onTap: (index) {
-//             setState(() {
-//               _currentIndex = index;
-//             });
-//             if (index == 1) {
-//               navigateTo_Second_Page(context);
-//             } else if (index == 2) {
-//               navigateTo_Third_Page(context);
-//             } else if (index == 3) {
-//               navigateTo_Forth_Page(context);
-//             } else if (index == 4) {
-//               navigateToSubPage(context);
-//             }
-//           },
-//           currentIndex: _currentIndex,
-//           type: BottomNavigationBarType.shifting,
-//           backgroundColor: Colors.lightBlue,
-//           iconSize: 25,
-//           items: [
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.add_shopping_cart),
-//               title: Text('#1'),
-//               backgroundColor: Colors.lightBlue,
-//             ),
-//             BottomNavigationBarItem(
-//                 icon: Icon(Icons.dashboard),
-//                 title: Text('#2'),
-//                 backgroundColor: Colors.lightBlue),
-//             BottomNavigationBarItem(
-//                 icon: Icon(Icons.home),
-//                 title: Text('#3'),
-//                 backgroundColor: Colors.lightBlue),
-//             BottomNavigationBarItem(
-//                 icon: Icon(Icons.favorite),
-//                 title: Text('#4'),
-//                 backgroundColor: Colors.lightBlue),
-//             BottomNavigationBarItem(
-//                 icon: Icon(Icons.search),
-//                 title: Text('#5'),
-//                 backgroundColor: Colors.lightBlue),
-//           ],
-//         ));
-//   }
-//
-//   Future navigateToSubPage(context) async {
-//     Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
-//   } //Future
-//
-//   Future navigateTo_Second_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Second_Page()));
-//   } //Future
-//
-//   Future navigateTo_Third_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Third_Page()));
-//   }
-//
-//   Future navigateTo_Forth_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Forth_Page()));
-//   }
-// } //_Third_Page Class
-//
-// //So on
-// class Forth_Page extends StatefulWidget {
-//   Forth_Page({Key key, this.title}) : super(key: key);
-//   final String title;
-//
-//   @override
-//   _Forth_Page createState() => _Forth_Page();
-// } //Forth_Page Class
-//
-// //And so on
-// class _Forth_Page extends State<Forth_Page> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('4th Page'),
-//           backgroundColor: Colors.blue,
-//         ),
-//         body: Padding(
-//           padding: const EdgeInsets.all(15.0),
-//           child: Center(
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               crossAxisAlignment: CrossAxisAlignment.stretch,
-//               children: <Widget>[
-//                 Text('This is the 4th page'),
-//                 RaisedButton(
-//                   textColor: Colors.white,
-//                   color: Colors.blue,
-//                   child: Text('Go back?'),
-//                   onPressed: () {
-//                     // navigateToMyHomePage(context);
-//                   },
-//                 )
-//               ],
-//             ),
-//           ),
-//         ),
-//         bottomNavigationBar: BottomNavigationBar(
-//           onTap: (index) {
-//             setState(() {
-//               _currentIndex = index;
-//             });
-//             if (index == 1) {
-//               navigateTo_Second_Page(context);
-//             } else if (index == 2) {
-//               navigateTo_Third_Page(context);
-//             } else if (index == 3) {
-//               navigateTo_Forth_Page(context);
-//             } else if (index == 4) {
-//               navigateToSubPage(context);
-//             }
-//           },
-//           currentIndex: _currentIndex,
-//           type: BottomNavigationBarType.shifting,
-//           backgroundColor: Colors.lightBlue,
-//           iconSize: 25,
-//           items: [
-//             BottomNavigationBarItem(
-//               icon: Icon(Icons.add_shopping_cart),
-//               title: Text('#1'),
-//               backgroundColor: Colors.lightBlue,
-//             ),
-//             BottomNavigationBarItem(
-//                 icon: Icon(Icons.dashboard),
-//                 title: Text('#2'),
-//                 backgroundColor: Colors.lightBlue),
-//             BottomNavigationBarItem(
-//                 icon: Icon(Icons.home),
-//                 title: Text('#3'),
-//                 backgroundColor: Colors.lightBlue),
-//             BottomNavigationBarItem(
-//                 icon: Icon(Icons.favorite),
-//                 title: Text('#4'),
-//                 backgroundColor: Colors.lightBlue),
-//             BottomNavigationBarItem(
-//                 icon: Icon(Icons.search),
-//                 title: Text('#5'),
-//                 backgroundColor: Colors.lightBlue),
-//           ],
-//         ));
-//   }
-//
-//   Future navigateToSubPage(context) async {
-//     Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
-//   } //Future
-//
-//   Future navigateTo_Second_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Second_Page()));
-//   } //Future
-//
-//   Future navigateTo_Third_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Third_Page()));
-//   }
-//
-//   Future navigateTo_Forth_Page(context) async {
-//     Navigator.push(
-//         context, MaterialPageRoute(builder: (context) => Forth_Page()));
-//   }
-// } //_Forth_Page Class
-//
-
 /*
     This can be the skeleton code for the recipe class.
  */
@@ -1251,64 +1087,175 @@ class SubPageChicken extends StatefulWidget {
 
   @override
   _SubPageChicken createState() => _SubPageChicken();
-} //Forth_Page Class
+}
 
 class _SubPageChicken extends State<SubPageChicken> {
-  final List<String> recipeImage = <String>[
-    'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/11/2/0/DV1510H_fried-chicken-recipe-10_s4x3.jpg.rend.hgtvcom.616.462.suffix/1568222255998.jpeg'
-  ];
+  final recipeImage =
+      'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/11/2/0/DV1510H_fried-chicken-recipe-10_s4x3.jpg.rend.hgtvcom.616.462.suffix/1568222255998.jpeg';
+  final recipeName = 'Chicken';
+  final recipeMealType = 'Meal';
+  final recipeCuisine = 'Cuisine';
+  final recipeTime = 'Time';
+  final recipeDifficulty = 'Difficulty';
+
+  final List<String> ingredients = <String>[
+    'Blah',
+    'Blah',
+    'Blah',
+    'Blah',
+    'Blah'
+  ]; //List of ingredients can be appended here for each category:
+
+  final List<bool> isSelected = <bool>[
+    true,
+    true,
+    true,
+    true,
+    true
+  ]; //makes individual checkboxes selected
+
+  final categoryColor = Colors.grey;
+  final _width = 100.0; //sets consistent width for checkboxes
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('(Recipe Name)'),
-        backgroundColor: interfaceColor,
+        //title: Text(recipeName),
+        backgroundColor: Colors
+            .transparent, //Makes app bar disappear but the back button will still appear
+        elevation: 0,
       ),
       body: Center(
-        child: ListView.builder(
-            padding: const EdgeInsets.all(10.0),
-            itemCount: recipeImage.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Center(
-                child: Column(
-                  children: <Widget>[
-                    Image.network('${recipeImage[index]}',
-                        //height: 500,
-                        fit: BoxFit.fill),
-                    Text(chickenRecipe.directions),
-                    Text("calories: " + chickenRecipe.calories.toString()),
-                    Text("servings: " + chickenRecipe.servings.toString()),
-                    Text("prepTime: " + chickenRecipe.prepTime.toString()),
-                    Text("totalCookTime:  " +
-                        chickenRecipe.totalCookTime.toString()),
-                    Text("meal type: " + chickenRecipe.thisMealType.toString()),
-                  ],
+        child: ListView(
+          padding: const EdgeInsets.all(0.0),
+          children: <Widget>[
+            Image.network(recipeImage,
+                //height: 500,
+                fit: BoxFit.fill),
+            //Container for header bar
+            Container(
+              color: interfaceColor,
+              height: 130,
+              child: Expanded(
+                child: Container(
+                  //color: Colors.grey,
+                  margin: EdgeInsets.symmetric(vertical: 15),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          recipeName,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Montserrat',
+                          ),
+                        ),
+                        Text(
+                          '${recipeMealType}, ${recipeCuisine}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: 'Montserrat',
+                          ),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.access_time,
+                              color: Colors.white,
+                              size: 5,
+                            ),
+                            Text(
+                              recipeTime,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 5,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'Montserrat',
+                              ),
+                            ),
+                            Text(
+                              ' • ${recipeDifficulty}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 5,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'Montserrat',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              );
-            }),
+              ),
+            ),
+            //Container for  ingredients and selected checklist
+            Container(
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    'Ingredients',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: Colors.black45),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    height: 30,
+                    child: ListView.separated(
+                      scrollDirection:
+                          Axis.horizontal, //makes scrolling go left and right
+                      itemCount: ingredients.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return new Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: categoryColor,
+                          ),
+                          width: _width,
+                          child: LabeledCheckbox(
+                            label: '${ingredients[index]}',
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            value: isSelected[index],
+                            onChanged: (bool newValue) {
+                              setState(() {
+                                isSelected[index] = newValue;
+                              });
+                            },
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          SizedBox(
+                        width: 10.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text(chickenRecipe.directions),
+            Text("calories: " + chickenRecipe.calories.toString()),
+            Text("servings: " + chickenRecipe.servings.toString()),
+            Text("prepTime: " + chickenRecipe.prepTime.toString()),
+            Text("totalCookTime:  " + chickenRecipe.totalCookTime.toString()),
+            Text("meal type: " + chickenRecipe.thisMealType.toString()),
+          ],
+        ),
       ),
     );
   }
-
-  // Future navigateToSubPage(context) async {
-  //   Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
-  // } //Future
-  //
-  // Future navigateTo_Second_Page(context) async {
-  //   Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => Second_Page()));
-  // } //Future
-  //
-  // Future navigateTo_Third_Page(context) async {
-  //   Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => Third_Page()));
-  // }
-  //
-  // Future navigateTo_Forth_Page(context) async {
-  //   Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => Forth_Page()));
-  // }
 
   void backToMainPage(context) {
     Navigator.pop(context);
