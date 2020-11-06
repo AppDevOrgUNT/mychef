@@ -33,8 +33,8 @@ class Database {
     User previousUser = _firebaseAuth.currentUser;
     if (previousUser != null)
     {
-      print("Logged in with a continued session. UID: " + uid);
       uid = previousUser.uid;
+      print("Logged in with a continued session. UID: " + uid);
       return true;
     }
     else

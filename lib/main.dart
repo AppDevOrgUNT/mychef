@@ -32,7 +32,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Database.init().then((_) { Database.anonymousSignIn(); } );
+    Database.init().then((_) {
+      Database.signInWithContinuedSession().then((signedIn) {
+        // True if signed in correctly, false if there is no continued session.
+        if (!signedIn) Database.anonymousSignIn();
+      });
+    });
     return MaterialApp(
       home: MyHomePage(title: 'myChef Functionality Test'),
     );
