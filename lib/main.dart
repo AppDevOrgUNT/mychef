@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:direct_select/direct_select.dart';
 import 'enums/Ingredient.dart';
@@ -7,7 +5,7 @@ import 'classes/Recipe.dart';
 import 'enums/Allergy.dart';
 import 'enums/MealType.dart';
 import 'enums/Diet.dart';
-import 'dart:collection';
+import 'classes/database.dart';
 
 Recipe chickenRecipe = new Recipe(
     directions:
@@ -34,6 +32,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Database.init().then((_) { Database.anonymousSignIn(); } );
     return MaterialApp(
       home: MyHomePage(title: 'myChef Functionality Test'),
     );
