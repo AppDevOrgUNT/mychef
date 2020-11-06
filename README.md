@@ -1,4 +1,9 @@
 # mychef
 
-# Team 1
-#May have to clean the project in order to run it. You can type flutter clean in the Terminal
+# Please update me at some point
+
+
+When running you may have to clean first
+run "flutter clean" in the terminal 
+then build like normal
+
