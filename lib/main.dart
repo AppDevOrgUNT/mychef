@@ -53,23 +53,6 @@ class MyApp extends StatelessWidget {
   } //Widget build
 } //MyApp Class
 
-//Creating a statefulwidget for "_MyHomePageState"
-// class MyHomePage extends StatefulWidget {
-//   MyHomePage({Key key, this.title}) : super(key: key);
-//   final String title; //this is the title from above
-//
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// } //MyHomePage Class
-
-//CREATING STATEFUL FOR SEARCHTEXTFIELD
-// class SearchTextFieldWidget extends StatefulWidget {
-//   SearchTextFieldWidget({Key key}) : super(key: key);
-//
-//   @override
-//   _SearchTextFieldWidgetState createState() => _SearchTextFieldWidgetState();
-// }
-
 //RECREATING STATEFUL WIDGET FOR MYHOMEPAGESTATE
 class MyHomePageWidget extends StatefulWidget {
   MyHomePageWidget({Key key}) : super(key: key);
