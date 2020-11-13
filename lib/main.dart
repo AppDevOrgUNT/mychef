@@ -61,18 +61,19 @@ class _MyHomePageState extends State<MyHomePage> {
     //for the URL, we are going to add the club API key, its using mine for now
     //and for any searches you can consult the spoonacular document to see the syntax,
     //you should be able to replace that middle with a variable
-    var url = 'https://api.spoonacular.com/recipes/complexSearch?query=cookies&apiKey=ed6d31ebce104a339672fc4babd4e536';
+    var url = 'https://api.spoonacular.com/recipes/findByIngredients?ingredients=beef,+broth,&number=30&apiKey=ed6d31ebce104a339672fc4babd4e536';
     //This is a feature unique to Future asyncronous functions, it waits for the server to respond to your request
     var response = await http.get(url);
     var recipe = List<Note>();
     //Asserts that the server response was successful
-    if (response.statusCode == 200){
+    if (response.statusCode == 200)
+      {
       //This is a call from the flutter json library.
       //It transforms the json string into a map. You can run the API url above on a browser to see what the keys for each element are
       var notesJson = json.decode(response.body);
       //If there is more than one result, the outtermost layer of the map will contain the number of finds
       //and a sub-map with all the results
-      for (var noteJson in notesJson["results"]){
+      for (var noteJson in notesJson){
         recipe.add(Note.fromJson(noteJson)); // populates recipes object
       }
       return recipe; // returns a List with all the recipes
@@ -95,22 +96,25 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
   }
+  String printIngr(List<String> ingredients)
+  {
+    String ingresList = ingredients.join(", ");
+    return ingresList;
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    //the placement of the index increment needs to be changed but this works for now
-    index++;
     return Scaffold(
       appBar: AppBar(
         //placeholder title for app
-        title: Text('Flutter listview with json'),
+        title: Text('My Chef Recipes'),
       ),
       body: ListView.builder(
         itemBuilder: (context, index){
           return Card(
             child: Padding(
-              padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 16.0, right: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -126,10 +130,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       //'sub title',
                       "Recipe ID: " + recipes[index].text,
                       style: TextStyle(
-                        color: Colors.grey.shade600
+                        color: Colors.grey.shade500
                       )
 
                   ),
+                  Text(
+                      "Missing Ingredients: " + printIngr(recipes[index].missIngredients),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal
+                      )
+                  ),
+                  Image.network(
+                    recipes[index].imageUrl,
+                    width: 200,
+                    height: 100,
+                  )
               ]
              )
             ),
@@ -138,5 +154,6 @@ class _MyHomePageState extends State<MyHomePage> {
         itemCount: recipes.length,
       )
     );
+    index++;
   }
 }
